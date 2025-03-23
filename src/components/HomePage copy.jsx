@@ -1,4 +1,4 @@
-const HomePage = () => {
+const HomePage = ({ onStart }) => {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4">
       <div className="text-center mb-8">
@@ -86,6 +86,13 @@ const HomePage = () => {
           </p>
         </div>
       </div>
+
+      <button
+        onClick={onStart}
+        className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+      >
+        Start Tracking Your Wedding Expenses
+      </button>
     </div>
   );
 };
