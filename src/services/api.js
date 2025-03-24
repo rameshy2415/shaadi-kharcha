@@ -2,8 +2,9 @@
 import axios from 'axios';
 
 // Create axios instance with default headers
+// UAT url:  baseURL: 'https://shaadi-kharcha-service.onrender.com/api'
 const api = axios.create({
-  baseURL: 'https://shaadi-kharcha-service.onrender.com/api',
+  baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
   }

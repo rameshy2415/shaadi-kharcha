@@ -64,7 +64,7 @@ const Login = () => {
         )}
 
         <form className="mt-8 space-y-6" onSubmit={onSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="grid grid-cols-1  gap-4">
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address

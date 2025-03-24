@@ -268,6 +268,7 @@ const MarriageExpenseTracker = () => {
                       required
                     />
                   </div>
+                  
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">
                       Amount (₹)
@@ -283,6 +284,7 @@ const MarriageExpenseTracker = () => {
                       required
                     />
                   </div>
+                  
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">
                       Category
@@ -301,6 +303,7 @@ const MarriageExpenseTracker = () => {
                       ))}
                     </select>
                   </div>
+                  
                   <div>
                     <label className="block text-sm font-medium mb-1 text-gray-700">
                       Date

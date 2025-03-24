@@ -1,5 +1,9 @@
 //import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {
+  ArrowRightEndOnRectangleIcon,
+  PowerIcon,
+} from "@heroicons/react/24/outline";
 const Header = () => {
   const token = localStorage.getItem("token");
   //const [user, setUser] = useState(null);
@@ -29,9 +33,22 @@ const Header = () => {
         <div className="text-sm">
           {/* <p className="opacity-90">Planning your special day made easier</p> */}
           {token == null ? (
-            <button onClick={loginHandler}>Login</button>
+            <button
+              className="flex items-center text-lg space-x-1 text-white hover:cursor-pointer"
+              onClick={loginHandler}
+            >
+              {" "}
+              <ArrowRightEndOnRectangleIcon className="h-6 w-6 text-white" />{" "}
+              <span className="hidden md:inline">Login</span>{" "}
+            </button>
           ) : (
-            <button onClick={logoutHandler}>Logout</button>
+            <button
+              className="flex items-center text-lg space-x-1 text-white hover:cursor-pointer"
+              onClick={logoutHandler}
+            >
+              <PowerIcon className="h-6 w-6 text-white" />{" "}
+              <span className="hidden md:inline">Logout</span>{" "}
+            </button>
           )}
         </div>
       </div>

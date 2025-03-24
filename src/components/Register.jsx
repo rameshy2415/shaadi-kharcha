@@ -80,7 +80,7 @@ const Register = () => {
         )}
 
         <form className="mt-8 space-y-6" onSubmit={onSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm -space-y-px grid grid-cols-1 gap-4">
             <div>
               <label htmlFor="name" className="sr-only">
                 Full Name
