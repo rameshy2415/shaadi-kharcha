@@ -1,6 +1,6 @@
 const HomePage = () => {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4">
+    <div className="flex flex-col items-center justify-center py-12 px-4 mt-15">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-purple-600 mb-4">
           Welcome to Wedding Expense Tracker

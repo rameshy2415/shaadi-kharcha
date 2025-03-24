@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   ArrowRightEndOnRectangleIcon,
   PowerIcon,
+  HomeIcon
 } from "@heroicons/react/24/outline";
 const Header = () => {
   const token = localStorage.getItem("token");
@@ -25,7 +26,8 @@ const Header = () => {
     <header className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="container flex items-center justify-between">
         <div className="flex items-center">
-          <WeddingRingIcon />
+          
+          <HomeIcon className="h-6 w-6 text-white" />
           <span className="text-xl font-bold ml-2">
             Wedding Expense Tracker
           </span>
