@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { expenseAPI } from "../services/api";
+import {
+  MinusIcon,
+  PlusIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
+  const [expandFlag, setExpandFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [receivedMoney, setReceivedMoney] = useState([]);
   const [expenseFormData, setExpenseFormData] = useState({
@@ -124,7 +131,7 @@ const MarriageExpenseTracker = () => {
   }; */
 
   // Handle expense deletion
-  const deleteExpense = async (id,_id) => {
+  const deleteExpense = async (id, _id) => {
     try {
       console.info("Id to be deleted", id);
       await expenseAPI.deleteExpense(_id);
@@ -211,7 +218,10 @@ const MarriageExpenseTracker = () => {
           <div className="bg-white rounded-t-lg shadow-md mb-6">
             <div className="flex justify-around md:justify-start flex-wrap ">
               <button
-                onClick={() => setActiveTab("expenses")}
+                onClick={() => {
+                  setActiveTab("expenses");
+                  setExpandFlag(false);
+                }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "expenses"
                     ? "text-purple-600 border-b-2 border-purple-600"
@@ -221,7 +231,10 @@ const MarriageExpenseTracker = () => {
                 Expenses
               </button>
               <button
-                onClick={() => setActiveTab("received")}
+                onClick={() => {
+                  setActiveTab("received");
+                  setExpandFlag(false);
+                }}
                 className={`py-3 px-2 md:px-6 text-sm  sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "received"
                     ? "text-purple-600 border-b-2 border-purple-600"
@@ -231,7 +244,10 @@ const MarriageExpenseTracker = () => {
                 Received Money
               </button>
               <button
-                onClick={() => setActiveTab("summary")}
+                onClick={() => {
+                  setActiveTab("summary");
+                  setExpandFlag(false);
+                }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "summary"
                     ? "text-purple-600 border-b-2 border-purple-600"
@@ -250,79 +266,91 @@ const MarriageExpenseTracker = () => {
                 onSubmit={addExpense}
                 className="bg-white p-6 rounded-lg shadow-md mb-6"
               >
-                <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                  Add New Expense
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Description
-                    </label>
-                    <input
-                      type="text"
-                      name="description"
-                      value={expenseFormData.description}
-                      onChange={handleExpenseChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                      placeholder="Expense description"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Amount (₹)
-                    </label>
-                    <input
-                      type="number"
-                      name="amount"
-                      value={expenseFormData.amount}
-                      onChange={handleExpenseChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                      placeholder="0"
-                      min="0"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Category
-                    </label>
-                    <select
-                      name="category"
-                      value={expenseFormData.category}
-                      onChange={handleExpenseChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                    >
-                      <option value="">Select Category</option>
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      name="date"
-                      value={expenseFormData.date}
-                      onChange={handleExpenseChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                <h2
+                  className="flex justify-between text-xl font-semibold  text-gray-800 hover:cursor-pointer"
+                  onClick={() => setExpandFlag((prev) => !prev)}
                 >
-                  Add Expense
-                </button>
+                  <span>Add New Expense</span>
+                  {expandFlag ? (
+                    <ChevronUpIcon className="h-6 w-6" />
+                  ) : (
+                    <ChevronDownIcon className="h-6 w-6" />
+                  )}
+                </h2>
+                {expandFlag && (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Description
+                        </label>
+                        <input
+                          type="text"
+                          name="description"
+                          value={expenseFormData.description}
+                          onChange={handleExpenseChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                          placeholder="Expense description"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Amount (₹)
+                        </label>
+                        <input
+                          type="number"
+                          name="amount"
+                          value={expenseFormData.amount}
+                          onChange={handleExpenseChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                          placeholder="0"
+                          min="0"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Category
+                        </label>
+                        <select
+                          name="category"
+                          value={expenseFormData.category}
+                          onChange={handleExpenseChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                        >
+                          <option value="">Select Category</option>
+                          {categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          value={expenseFormData.date}
+                          onChange={handleExpenseChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    >
+                      Add Expense
+                    </button>
+                  </>
+                )}
               </form>
 
               <div className="bg-white p-6 rounded-lg shadow-md">
@@ -361,7 +389,9 @@ const MarriageExpenseTracker = () => {
                             </td>
                             <td className="p-2 border text-center">
                               <button
-                                onClick={() => deleteExpense(expense.id,expense._id)}
+                                onClick={() =>
+                                  deleteExpense(expense.id, expense._id)
+                                }
                                 className="text-red-500 hover:text-red-700"
                                 aria-label="Delete expense"
                               >
@@ -385,71 +415,83 @@ const MarriageExpenseTracker = () => {
                 onSubmit={addReceivedMoney}
                 className="bg-white p-6 rounded-lg shadow-md mb-6"
               >
-                <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                  Add Money Received
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      From
-                    </label>
-                    <input
-                      type="text"
-                      name="from"
-                      value={receivedFormData.from}
-                      onChange={handleReceivedChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                      placeholder="Person or source"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Amount (₹)
-                    </label>
-                    <input
-                      type="number"
-                      name="amount"
-                      value={receivedFormData.amount}
-                      onChange={handleReceivedChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                      placeholder="0"
-                      min="0"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Notes
-                    </label>
-                    <input
-                      type="text"
-                      name="notes"
-                      value={receivedFormData.notes}
-                      onChange={handleReceivedChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                      placeholder="Any additional notes"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      name="date"
-                      value={receivedFormData.date}
-                      onChange={handleReceivedChange}
-                      className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                <h2
+                  className="flex justify-between text-xl font-semibold  text-gray-800 hover:cursor-pointer"
+                  onClick={() => setExpandFlag((prev) => !prev)}
                 >
-                  Add Received Money
-                </button>
+                  <span>Add Money Received</span>
+                  {expandFlag ? (
+                    <ChevronUpIcon className="h-6 w-6" />
+                  ) : (
+                    <ChevronDownIcon className="h-6 w-6" />
+                  )}
+                </h2>
+                {expandFlag && (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          From
+                        </label>
+                        <input
+                          type="text"
+                          name="from"
+                          value={receivedFormData.from}
+                          onChange={handleReceivedChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                          placeholder="Person or source"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Amount (₹)
+                        </label>
+                        <input
+                          type="number"
+                          name="amount"
+                          value={receivedFormData.amount}
+                          onChange={handleReceivedChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                          placeholder="0"
+                          min="0"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Notes
+                        </label>
+                        <input
+                          type="text"
+                          name="notes"
+                          value={receivedFormData.notes}
+                          onChange={handleReceivedChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                          placeholder="Any additional notes"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1 text-gray-700">
+                          Date
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          value={receivedFormData.date}
+                          onChange={handleReceivedChange}
+                          className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    >
+                      Add Received Money
+                    </button>
+                  </>
+                )}
               </form>
 
               <div className="bg-white p-6 rounded-lg shadow-md">

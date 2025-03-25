@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { authAPI } from '../services/api';
+import { authAPI } from "../services/api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ const Login = () => {
 
     try {
       //const res = await axios.post("/api/auth/login", { email, password });
-      const res = await authAPI.login({ email, password })
+      const res = await authAPI.login({ email, password });
 
       // Save token to localStorage
       localStorage.setItem("token", res.data.token);
@@ -43,8 +43,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8  p-10 rounded-xl border-1 border-indigo-300">
+    <div className="min-h-screen bg-gradient-to-r from-purple-200 to-pink-200 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8  p-10 rounded-xl  bg-white">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Log in
@@ -74,7 +74,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
                 placeholder="Email address"
                 value={email}
                 onChange={onChange}
@@ -89,7 +89,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-300 focus:border-transparent"
                 placeholder="Password"
                 value={password}
                 onChange={onChange}
