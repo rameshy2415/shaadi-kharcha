@@ -3,7 +3,6 @@ import axios from 'axios';
 import config from '../config/config';
 
 // Create axios instance with default headers
-// UAT url:  baseURL: 'https://shaadi-kharcha-service.onrender.com/api'
 const api = axios.create({
   baseURL: config.BACKEND_API,
   headers: {

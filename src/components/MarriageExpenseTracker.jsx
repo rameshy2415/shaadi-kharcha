@@ -209,10 +209,10 @@ const MarriageExpenseTracker = () => {
 
           {/* Mobile-friendly tabs */}
           <div className="bg-white rounded-t-lg shadow-md mb-6">
-            <div className="flex flex-wrap border-b">
+            <div className="flex justify-around md:justify-start flex-wrap ">
               <button
                 onClick={() => setActiveTab("expenses")}
-                className={`py-3 px-6 text-sm sm:text-base font-medium ${
+                className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "expenses"
                     ? "text-purple-600 border-b-2 border-purple-600"
                     : "text-gray-500 hover:text-gray-700"
@@ -222,7 +222,7 @@ const MarriageExpenseTracker = () => {
               </button>
               <button
                 onClick={() => setActiveTab("received")}
-                className={`py-3 px-6 text-sm  sm:text-base font-medium ${
+                className={`py-3 px-2 md:px-6 text-sm  sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "received"
                     ? "text-purple-600 border-b-2 border-purple-600"
                     : "text-gray-500 hover:text-gray-700"
@@ -232,7 +232,7 @@ const MarriageExpenseTracker = () => {
               </button>
               <button
                 onClick={() => setActiveTab("summary")}
-                className={`py-3 px-6 text-sm sm:text-base font-medium ${
+                className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "summary"
                     ? "text-purple-600 border-b-2 border-purple-600"
                     : "text-gray-500 hover:text-gray-700"
