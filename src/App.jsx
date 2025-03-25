@@ -13,12 +13,14 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
+
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/login" />;
 };
 
 function App() {
+
   return (
     <>
       <Router>

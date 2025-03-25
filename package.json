@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "uat": "vite --mode uat",
+    "prod": "vite --mode production",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.0.8",
     "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
     "project-management": "file:",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
