@@ -52,4 +52,12 @@ export const expenseAPI = {
   deleteExpense: id => api.delete(`/expenses/${id}`)
 };
 
+// Receive money API calls
+export const receiveMoneyAPI = {
+  getReceivedMoney: () => api.get('/receivemoney'),
+  addReceivedMoney: receiveMoneyData => api.post('/receivemoney', receiveMoneyData),
+  updateReceivedMoney: (id, receiveMoneyData) => api.put(`/receivemoney/${id}`, receiveMoneyData),
+  deleteReceivedMoney: id => api.delete(`/receivemoney/${id}`)
+};
+
 export default api;

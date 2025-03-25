@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { expenseAPI } from "../services/api";
+import { expenseAPI, receiveMoneyAPI } from "../services/api";
 import {
   MinusIcon,
   PlusIcon,
@@ -44,6 +44,9 @@ const MarriageExpenseTracker = () => {
       try {
         const res = await expenseAPI.getExpenses();
         setExpenses(res.data);
+
+        const res1 = await receiveMoneyAPI.getReceivedMoney();
+        setReceivedMoney(res1.data);
         //setLoading(false);
       } catch (err) {
         console.error("Failed to fetch expenses", err);
@@ -104,7 +107,7 @@ const MarriageExpenseTracker = () => {
   };
 
   // Add new received money
-  const addReceivedMoney = (e) => {
+  const addReceivedMoney = async (e) => {
     e.preventDefault();
     if (!receivedFormData.from || !receivedFormData.amount) return;
 
@@ -114,7 +117,13 @@ const MarriageExpenseTracker = () => {
       amount: parseFloat(receivedFormData.amount),
     };
 
-    setReceivedMoney([...receivedMoney, newReceived]);
+    try {
+      let res;
+      res = await receiveMoneyAPI.addReceivedMoney(newReceived);
+      setReceivedMoney([...receivedMoney, res.data]);
+    } catch (err) {
+      console.error("Failed to save receive money", err);
+    }
 
     // Reset form data after submission
     setReceivedFormData({
@@ -143,7 +152,7 @@ const MarriageExpenseTracker = () => {
 
   // Delete received money
   const deleteReceived = (id) => {
-    setReceivedMoney(receivedMoney.filter((received) => received.id !== id));
+    setReceivedMoney(receivedMoney.filter((received) => received._id !== id));
   };
 
   // Calculate totals
@@ -517,7 +526,7 @@ const MarriageExpenseTracker = () => {
                       <tbody>
                         {receivedMoney.map((received) => (
                           <tr
-                            key={received.id}
+                            key={received._id}
                             className="border-b hover:bg-gray-50"
                           >
                             <td className="p-2 border">{received.date}</td>
@@ -528,7 +537,7 @@ const MarriageExpenseTracker = () => {
                             </td>
                             <td className="p-2 border text-center">
                               <button
-                                onClick={() => deleteReceived(received.id)}
+                                onClick={() => deleteReceived(received._id)}
                                 className="text-red-500 hover:text-red-700"
                                 aria-label="Delete received payment"
                               >
