@@ -8,6 +8,8 @@
     "uat": "vite --mode uat",
     "prod": "vite --mode production",
     "build": "vite build",
+    "build:uat": "vite build --mode uat",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview"
   },
