@@ -12,6 +12,7 @@ import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import HeaderWithSidebar from "./components/HeaderWithSidebar"
 
 
 const PrivateRoute = ({ children }) => {

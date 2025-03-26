@@ -1,8 +1,9 @@
 // Register Component with Tailwind CSS (components/Register.js)
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { authAPI } from "../services/api";
+import { UserContext } from "../context/AuthProvider";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+   const { setUser, setAuthFlag } = useContext(UserContext);
 
   const { name, email, password, password2 } = formData;
 
@@ -49,7 +51,8 @@ const Register = () => {
 
       // Set auth header for future requests
       axios.defaults.headers.common["x-auth-token"] = res.data.token;
-
+      setUser(res.data.user)
+      setAuthFlag(true)
       setLoading(false);
       navigate("/dashboard");
     } catch (err) {

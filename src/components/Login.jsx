@@ -1,12 +1,15 @@
 // Login Component with Tailwind CSS (components/Login.js)
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { authAPI } from "../services/api";
 
+import { UserContext } from "../context/AuthProvider";
+
 
 const Login = () => {
+  const { setUser, setAuthFlag } = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -32,15 +35,12 @@ const Login = () => {
     setError("");
 
     try {
-      //const res = await axios.post("/api/auth/login", { email, password });
       const res = await authAPI.login({ email, password });
-
-      // Save token to localStorage
       localStorage.setItem("token", res.data.token);
-
       // Set auth header for future requests
       axios.defaults.headers.common["x-auth-token"] = res.data.token;
-
+      setUser(res.data.user)
+      setAuthFlag(true)
       setLoading(false);
       navigate("/dashboard");
     } catch (err) {
