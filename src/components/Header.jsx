@@ -49,7 +49,7 @@ const Header = () => {
           ) : (
             <div className="relative inline-block">
               <button
-                className="flex items-center justify-center border-2 border-white px-3 text-lg space-x-2 text-white rounded-full hover:cursor-pointer"
+                className="flex items-center justify-center border-2 border-white px-3 text-md md:text-xl space-x-2 text-white rounded-full hover:cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)} 
               >
                  {initialsName}
