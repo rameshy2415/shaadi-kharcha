@@ -28,11 +28,20 @@ const Header = () => {
     navigate("/");
   };
 
+  const homeHandler = () => {
+    console.log("HomeHandler Click");
+    localStorage.removeItem("token");
+    setUser(null);
+    setAuthFlag(false);
+    setIsOpen(false)
+    navigate("/");
+  };
+
   return (
     <header className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="container flex items-center justify-between">
         <div className="flex items-center">
-          <HomeIcon className="h-6 w-6 text-white" />
+          <HomeIcon className="h-6 w-6 text-white" onClick={homeHandler} />
           <span className="text-md md:text-xl font-bold ml-2">
             Wedding Expense Tracker
           </span>

@@ -7,10 +7,15 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { ApplicationContext } from "../context/ApplicationContextProvider";
-import Loader from "./Loader.jsx"
+import Loader from "./Loader.jsx";
+import { jsPDF } from 'jspdf';
+import { applyPlugin } from 'jspdf-autotable'
+applyPlugin(jsPDF)
+
+//import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
-  const { loading, setLoading}  =  useContext(ApplicationContext)
+  const { loading, setLoading } = useContext(ApplicationContext);
   const [expandFlag, setExpandFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [receivedMoney, setReceivedMoney] = useState([]);
@@ -84,7 +89,6 @@ const MarriageExpenseTracker = () => {
     if (!expenseFormData.description || !expenseFormData.amount) return;
 
     const newExpense = {
-      id: Date.now(),
       ...expenseFormData,
       amount: parseFloat(expenseFormData.amount),
     };
@@ -94,12 +98,12 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
-      setLoading(true)
+      setLoading(true);
       res = await expenseAPI.addExpense(newExpense);
       setExpenses([res.data, ...expenses]);
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       console.error("Failed to save expense", err);
     }
 
@@ -125,12 +129,12 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
-      setLoading(true)
+      setLoading(true);
       res = await receiveMoneyAPI.addReceivedMoney(newReceived);
-      setLoading(false)
+      setLoading(false);
       setReceivedMoney([...receivedMoney, res.data]);
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       console.error("Failed to save receive money", err);
     }
 
@@ -144,24 +148,25 @@ const MarriageExpenseTracker = () => {
   };
 
   // Delete expense
-  /*   const deleteExpense = (id) => {
-    setExpenses(expenses.filter((expense) => expense.id !== id));
-  }; */
-
-  // Handle expense deletion
-  const deleteExpense = async (id, _id) => {
+  const deleteExpense = async (_id) => {
     try {
-      console.info("Id to be deleted", id);
+      console.info("Id to be deleted", _id);
       await expenseAPI.deleteExpense(_id);
-      setExpenses(expenses.filter((expense) => expense.id !== id));
+      setExpenses(expenses.filter((expense) => expense._id !== _id));
     } catch (err) {
       console.error("Failed to delete expense", err);
     }
   };
 
   // Delete received money
-  const deleteReceived = (id) => {
-    setReceivedMoney(receivedMoney.filter((received) => received._id !== id));
+  const deleteReceived = async (id) => {
+    try {
+      console.info("Id to be deleted", id);
+      await receiveMoneyAPI.deleteReceivedMoney(id);
+      setReceivedMoney(receivedMoney.filter((receivedMoney) => receivedMoney._id !== id));
+    } catch (err) {
+      console.error("Failed to delete received money", err);
+    }
   };
 
   // Calculate totals
@@ -191,6 +196,84 @@ const MarriageExpenseTracker = () => {
       maximumFractionDigits: 0,
     }).format(amount);
   };
+
+/* const generatePDFReport = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+    
+    // Calculate totals
+    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const totalReceived = receivedMoney.reduce((sum, money) => sum + money.amount, 0);
+    const netBalance = totalReceived - totalExpenses;
+
+    // Report Title
+    doc.setFontSize(22);
+    doc.text('Marriage Expenses Report', 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+
+    // Expenses Section
+    doc.setFontSize(16);
+    doc.text('Expenses Breakdown', 20, 50);
+    doc.autoTable({
+      startY: 60,
+      head: [['Date', 'Description', 'Category', 'Amount (₹)']],
+      body: expenses.map(expense => [
+        expense.date,
+        expense.description,
+        expense.category,
+        expense.amount.toLocaleString()
+      ]),
+      theme: 'striped',
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185] }
+    });
+
+    // Received Money Section
+    const expensesEndY = doc.previousAutoTable?.finalY + 10;
+    doc.setFontSize(16);
+    doc.text('Received Money', 20, expensesEndY);
+    doc.autoTable({
+      startY: expensesEndY + 10,
+      head: [['Date','From','Notes', 'Amount (₹)']],
+      body: receivedMoney.map(money => [
+        money.date,
+        money.from,
+        money.notes,
+        money.amount.toLocaleString()
+      ]),
+      theme: 'striped',
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [39, 174, 96] }
+    });
+
+    // Summary Section
+    const receivedMoneyEndY = doc.previousAutoTable?.finalY + 10;
+    doc.setFontSize(16);
+    doc.text('Financial Summary', 20, receivedMoneyEndY);
+    
+    doc.autoTable({
+      startY: receivedMoneyEndY + 10,
+      head: [['Description', 'Amount (₹)']],
+      body: [
+        ['Total Expenses', totalExpenses.toLocaleString()],
+        ['Total Received', totalReceived.toLocaleString()],
+        ['Net Balance', netBalance.toLocaleString()]
+      ],
+      theme: 'plain',
+      styles: { fontSize: 12 },
+      headStyles: { fillColor: [52, 152, 219], textColor: 255 }
+    });
+
+    // Save the PDF
+    doc.save('Marriage_Expenses_Report.pdf');
+  }; */
+
+  const generatePDFReport = () => {
+    //window.print();
+    alert('Feature will be available in next release')
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 mt-25">
@@ -362,12 +445,12 @@ const MarriageExpenseTracker = () => {
                       </div>
                     </div>
                     <button
-                     disabled={loading}
+                      disabled={loading}
                       type="submit"
                       className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-900"
                     >
-                     {loading ? "Adding..." : "Add Expense"}
-                     {loading && ( <Loader />)}
+                      {loading ? "Adding..." : "Add Expense"}
+                      {loading && <Loader />}
                     </button>
                   </>
                 )}
@@ -384,20 +467,32 @@ const MarriageExpenseTracker = () => {
                     <table className="w-full border-collapse border border-gray-400">
                       <thead>
                         <tr className="bg-gray-50">
-                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">Date</th>
-                          <th className="p-2 border border-gray-300 text-left">Description</th>
-                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">Category</th>
-                          <th className="p-2 border border-gray-300 text-right">Amount</th>
-                          <th className="p-2 border border-gray-300 text-center">Action</th>
+                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">
+                            Date
+                          </th>
+                          <th className="p-2 border border-gray-300 text-left">
+                            Description
+                          </th>
+                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">
+                            Category
+                          </th>
+                          <th className="p-2 border border-gray-300 text-right">
+                            Amount
+                          </th>
+                          <th className="p-2 border border-gray-300 text-center">
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {expenses.map((expense) => (
                           <tr
-                            key={expense.id}
+                            key={expense._id}
                             className="border-b hover:bg-gray-50"
                           >
-                            <td className="p-2 border border-gray-300 hidden md:table-cell">{expense.date}</td>
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">
+                              {expense.date}
+                            </td>
                             <td className="p-2 border border-gray-300">
                               {expense.description}
                             </td>
@@ -410,7 +505,7 @@ const MarriageExpenseTracker = () => {
                             <td className="p-2 border border-gray-300 text-center">
                               <button
                                 onClick={() =>
-                                  deleteExpense(expense.id, expense._id)
+                                  deleteExpense(expense._id)
                                 }
                                 className="text-red-500 cursor-pointer hover:text-red-700"
                                 aria-label="Delete expense"
@@ -508,9 +603,8 @@ const MarriageExpenseTracker = () => {
                       type="submit"
                       className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-300"
                     >
-                       {loading ? "Adding..." : " Add Received Money"}
-                       {loading && ( <Loader />)}
-                     
+                      {loading ? "Adding..." : " Add Received Money"}
+                      {loading && <Loader />}
                     </button>
                   </>
                 )}
@@ -529,11 +623,21 @@ const MarriageExpenseTracker = () => {
                     <table className="w-full border-collapse  border-gray-400">
                       <thead>
                         <tr className="bg-gray-50">
-                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">Date</th>
-                          <th className="p-2 border text-left border-gray-300">From</th>
-                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">Notes</th>
-                          <th className="p-2 border text-right border-gray-300">Amount</th>
-                          <th className="p-2 border text-center border-gray-300">Action</th>
+                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">
+                            Date
+                          </th>
+                          <th className="p-2 border text-left border-gray-300">
+                            From
+                          </th>
+                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">
+                            Notes
+                          </th>
+                          <th className="p-2 border text-right border-gray-300">
+                            Amount
+                          </th>
+                          <th className="p-2 border text-center border-gray-300">
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -542,9 +646,15 @@ const MarriageExpenseTracker = () => {
                             key={received._id}
                             className="border-b hover:bg-gray-50"
                           >
-                            <td className="p-2 border border-gray-300 hidden md:table-cell">{received.date}</td>
-                            <td className="p-2 border border-gray-300">{received.from}</td>
-                            <td className="p-2 border border-gray-300 hidden md:table-cell">{received.notes}</td>
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">
+                              {received.date}
+                            </td>
+                            <td className="p-2 border border-gray-300">
+                              {received.from}
+                            </td>
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">
+                              {received.notes}
+                            </td>
                             <td className="p-2 border text-right border-gray-300">
                               {formatINR(received.amount)}
                             </td>
@@ -570,7 +680,7 @@ const MarriageExpenseTracker = () => {
           {/* Summary Tab */}
           {activeTab === "summary" && (
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800 text-center md:text-left">
                 Financial Summary
               </h2>
 
@@ -634,6 +744,17 @@ const MarriageExpenseTracker = () => {
                       {formatINR(balance)}
                     </span>
                   </div>
+
+                  <div className="flex justify-between py-3 mt-2 font-bold">
+                    <button
+                      onClick={generatePDFReport}
+                      disabled={loading}
+                      className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-amber-50"
+                    >
+                      {loading ? "Generating..." : "Generate PDF Report"}
+                      {loading && <Loader />}
+                    </button>
+                  </div>
                   {balance < 0 && (
                     <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                       <p className="text-red-600">
@@ -658,6 +779,27 @@ const MarriageExpenseTracker = () => {
                     </div>
                   )}
                 </div>
+
+                 {/* Custom Print Styles */}
+      <style jsx global>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .printable-report, .printable-report * {
+            visibility: visible;
+          }
+          .printable-report {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+          .print:hidden {
+            display: none;
+          }
+        }
+      `}</style>
               </div>
             </div>
           )}
