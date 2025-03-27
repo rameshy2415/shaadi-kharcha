@@ -8,11 +8,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { ApplicationContext } from "../context/ApplicationContextProvider";
 import Loader from "./Loader.jsx";
-import { jsPDF } from 'jspdf';
-import { applyPlugin } from 'jspdf-autotable'
-applyPlugin(jsPDF)
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
 
-//import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
   const { loading, setLoading } = useContext(ApplicationContext);
@@ -163,7 +161,9 @@ const MarriageExpenseTracker = () => {
     try {
       console.info("Id to be deleted", id);
       await receiveMoneyAPI.deleteReceivedMoney(id);
-      setReceivedMoney(receivedMoney.filter((receivedMoney) => receivedMoney._id !== id));
+      setReceivedMoney(
+        receivedMoney.filter((receivedMoney) => receivedMoney._id !== id)
+      );
     } catch (err) {
       console.error("Failed to delete received money", err);
     }
@@ -197,83 +197,84 @@ const MarriageExpenseTracker = () => {
     }).format(amount);
   };
 
-/* const generatePDFReport = () => {
+  const generatePDFReport = () => {
     // Create a new jsPDF instance
     const doc = new jsPDF();
-    
+
     // Calculate totals
-    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    const totalReceived = receivedMoney.reduce((sum, money) => sum + money.amount, 0);
+    const totalExpenses = expenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+    const totalReceived = receivedMoney.reduce(
+      (sum, money) => sum + money.amount,
+      0
+    );
     const netBalance = totalReceived - totalExpenses;
+    doc.setFont("courier");
 
     // Report Title
     doc.setFontSize(22);
-    doc.text('Marriage Expenses Report', 20, 20);
+    doc.text("Marriage Expenses Report", 15, 20);
     doc.setFontSize(12);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+    doc.text(`Generated on: ${new Date().toISOString().split("T")[0]}`, 15, 30);
 
     // Expenses Section
     doc.setFontSize(16);
-    doc.text('Expenses Breakdown', 20, 50);
-    doc.autoTable({
-      startY: 60,
-      head: [['Date', 'Description', 'Category', 'Amount (₹)']],
-      body: expenses.map(expense => [
+    doc.text("Expenses Details", 15, 50);
+    autoTable(doc,{
+      startY: 55,
+      head: [["Date", "Description", "Category", "Amount (₹)"]],
+      body: expenses.map((expense) => [
         expense.date,
         expense.description,
         expense.category,
-        expense.amount.toLocaleString()
+        expense.amount.toLocaleString(),
       ]),
-      theme: 'striped',
+      theme: "striped",
       styles: { fontSize: 10 },
-      headStyles: { fillColor: [41, 128, 185] }
+      headStyles: { fillColor: [41, 128, 185] },
     });
 
     // Received Money Section
-    const expensesEndY = doc.previousAutoTable?.finalY + 10;
+    const expensesEndY = doc.lastAutoTable?.finalY + 20;
     doc.setFontSize(16);
-    doc.text('Received Money', 20, expensesEndY);
-    doc.autoTable({
-      startY: expensesEndY + 10,
-      head: [['Date','From','Notes', 'Amount (₹)']],
-      body: receivedMoney.map(money => [
+    doc.text("Received Money Details", 15, expensesEndY);
+    autoTable(doc, {
+      startY: expensesEndY + 5,
+      head: [["Date", "From", "Notes", "Amount (₹)"]],
+      body: receivedMoney.map((money) => [
         money.date,
         money.from,
         money.notes,
-        money.amount.toLocaleString()
+        money.amount.toLocaleString(),
       ]),
-      theme: 'striped',
+      theme: "striped",
       styles: { fontSize: 10 },
-      headStyles: { fillColor: [39, 174, 96] }
+      headStyles: { fillColor: [39, 174, 96] },
     });
 
     // Summary Section
-    const receivedMoneyEndY = doc.previousAutoTable?.finalY + 10;
+    const receivedMoneyEndY = doc.lastAutoTable?.finalY + 20;
     doc.setFontSize(16);
-    doc.text('Financial Summary', 20, receivedMoneyEndY);
-    
-    doc.autoTable({
-      startY: receivedMoneyEndY + 10,
-      head: [['Description', 'Amount (₹)']],
+    doc.text("Financial Summary", 15, receivedMoneyEndY);
+
+    autoTable(doc, {
+      startY: receivedMoneyEndY + 5,
+      head: [["Description", "Amount (₹)"]],
       body: [
-        ['Total Expenses', totalExpenses.toLocaleString()],
-        ['Total Received', totalReceived.toLocaleString()],
-        ['Net Balance', netBalance.toLocaleString()]
+        ["Total Expenses", totalExpenses.toLocaleString()],
+        ["Total Received", totalReceived.toLocaleString()],
+        ["Net Balance", netBalance.toLocaleString()],
       ],
-      theme: 'plain',
+      theme: "plain",
       styles: { fontSize: 12 },
-      headStyles: { fillColor: [52, 152, 219], textColor: 255 }
+      headStyles: { fillColor: [52, 152, 219], textColor: 255 },
     });
 
     // Save the PDF
-    doc.save('Marriage_Expenses_Report.pdf');
-  }; */
-
-  const generatePDFReport = () => {
-    //window.print();
-    alert('Feature will be available in next release')
+    doc.save("Marriage_Expenses_Report.pdf");
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 mt-25">
@@ -504,9 +505,7 @@ const MarriageExpenseTracker = () => {
                             </td>
                             <td className="p-2 border border-gray-300 text-center">
                               <button
-                                onClick={() =>
-                                  deleteExpense(expense._id)
-                                }
+                                onClick={() => deleteExpense(expense._id)}
                                 className="text-red-500 cursor-pointer hover:text-red-700"
                                 aria-label="Delete expense"
                               >
@@ -749,7 +748,7 @@ const MarriageExpenseTracker = () => {
                     <button
                       onClick={generatePDFReport}
                       disabled={loading}
-                      className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-amber-50"
+                      className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none   disabled:cursor-not-allowed disabled:bg-amber-50"
                     >
                       {loading ? "Generating..." : "Generate PDF Report"}
                       {loading && <Loader />}
@@ -779,27 +778,6 @@ const MarriageExpenseTracker = () => {
                     </div>
                   )}
                 </div>
-
-                 {/* Custom Print Styles */}
-      <style jsx global>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          .printable-report, .printable-report * {
-            visibility: visible;
-          }
-          .printable-report {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          .print:hidden {
-            display: none;
-          }
-        }
-      `}</style>
               </div>
             </div>
           )}

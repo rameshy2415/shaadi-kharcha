@@ -506,3 +506,182 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+
+
+
+
+
+
+import React, { useState } from 'react';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+// Sample data structure to represent complete marriage expenses tracking
+const initialData = {
+  expenses: [
+    { category: 'Venue', subcategory: 'Wedding Hall', amount: 50000, vendor: 'Royal Banquet Hall', date: '2024-02-15' },
+    { category: 'Catering', subcategory: 'Main Course', amount: 35000, vendor: 'Gourmet Caterers', date: '2024-02-20' },
+    { category: 'Photography', subcategory: 'Wedding Shoot', amount: 25000, vendor: 'Memory Makers Studio', date: '2024-02-10' },
+    { category: 'Decorations', subcategory: 'Floral', amount: 15000, vendor: 'Floral Fantasies', date: '2024-02-12' },
+    { category: 'Attire', subcategory: 'Bride & Groom', amount: 40000, vendor: 'Bridal Couture', date: '2024-01-25' }
+  ],
+  receivedMoney: [
+    { source: 'Bride\'s Family', amount: 100000, date: '2024-01-20' },
+    { source: 'Groom\'s Family', amount: 75000, date: '2024-01-22' },
+    { source: 'Friends Contribution', amount: 25000, date: '2024-02-05' }
+  ]
+};
+
+const MarriageExpensesFullReport = () => {
+  const [data, setData] = useState(initialData);
+
+  const generatePDFReport = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+    
+    // Calculate totals
+    const totalExpenses = data.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const totalReceived = data.receivedMoney.reduce((sum, money) => sum + money.amount, 0);
+    const netBalance = totalReceived - totalExpenses;
+
+    // Report Title
+    doc.setFontSize(22);
+    doc.text('Marriage Expenses Report', 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+
+    // Expenses Section
+    doc.setFontSize(16);
+    doc.text('Expenses Breakdown', 20, 50);
+    doc.autoTable({
+      startY: 60,
+      head: [['Category', 'Subcategory', 'Vendor', 'Date', 'Amount (₹)']],
+      body: data.expenses.map(expense => [
+        expense.category,
+        expense.subcategory,
+        expense.vendor,
+        expense.date,
+        expense.amount.toLocaleString()
+      ]),
+      theme: 'striped',
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185] }
+    });
+
+    // Received Money Section
+    const expensesEndY = doc.previousAutoTable.finalY + 10;
+    doc.setFontSize(16);
+    doc.text('Received Money', 20, expensesEndY);
+    doc.autoTable({
+      startY: expensesEndY + 10,
+      head: [['Source', 'Date', 'Amount (₹)']],
+      body: data.receivedMoney.map(money => [
+        money.source,
+        money.date,
+        money.amount.toLocaleString()
+      ]),
+      theme: 'striped',
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [39, 174, 96] }
+    });
+
+    // Summary Section
+    const receivedMoneyEndY = doc.previousAutoTable.finalY + 10;
+    doc.setFontSize(16);
+    doc.text('Financial Summary', 20, receivedMoneyEndY);
+    
+    doc.autoTable({
+      startY: receivedMoneyEndY + 10,
+      head: [['Description', 'Amount (₹)']],
+      body: [
+        ['Total Expenses', totalExpenses.toLocaleString()],
+        ['Total Received', totalReceived.toLocaleString()],
+        ['Net Balance', netBalance.toLocaleString()]
+      ],
+      theme: 'plain',
+      styles: { fontSize: 12 },
+      headStyles: { fillColor: [52, 152, 219], textColor: 255 }
+    });
+
+    // Save the PDF
+    doc.save('Marriage_Expenses_Report.pdf');
+  };
+
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Marriage Expenses Full Report</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div>
+            <h3 className="font-bold mb-2">Expenses Summary</h3>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="text-left">Category</th>
+                  <th className="text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.expenses.map((expense, index) => (
+                  <tr key={index}>
+                    <td>{expense.category}</td>
+                    <td className="text-right">₹{expense.amount.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td className="font-bold">Total Expenses</td>
+                  <td className="text-right font-bold">
+                    ₹{data.expenses.reduce((sum, expense) => sum + expense.amount, 0).toLocaleString()}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div>
+            <h3 className="font-bold mb-2">Received Money</h3>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="text-left">Source</th>
+                  <th className="text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.receivedMoney.map((money, index) => (
+                  <tr key={index}>
+                    <td>{money.source}</td>
+                    <td className="text-right">₹{money.amount.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td className="font-bold">Total Received</td>
+                  <td className="text-right font-bold">
+                    ₹{data.receivedMoney.reduce((sum, money) => sum + money.amount, 0).toLocaleString()}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div className="flex space-x-2">
+            <Button onClick={generatePDFReport}>
+              Generate Full Report PDF
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default MarriageExpensesFullReport;

@@ -49,6 +49,7 @@ const Register = () => {
       // Set auth header for future requests
       axios.defaults.headers.common["x-auth-token"] = res.data.token;
       setUser(res.data.user)
+      localStorage.setItem("user", res.data.user);
       setAuthFlag(true)
       setLoading(false);
       navigate("/dashboard");
