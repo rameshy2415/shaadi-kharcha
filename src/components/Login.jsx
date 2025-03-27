@@ -6,6 +6,8 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { authAPI } from "../services/api";
 
 import { UserContext } from "../context/AuthProvider";
+import { ApplicationContext } from "../context/ApplicationContextProvider"
+import Loader from "./Loader.jsx"
 
 
 const Login = () => {
@@ -15,7 +17,7 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading}  =  useContext(ApplicationContext)
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -124,25 +126,7 @@ const Login = () => {
               className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-amber-50"
             >
               {loading ? "Signing in..." : "Sign in"}
-              {loading && (
-                <svg
-                  className="animate-spin size-5"
-                  viewBox="0 0 50 50"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r="20"
-                    stroke="white"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeDasharray="100 200"
-                    strokeDashoffset="0"
-                  />
-                </svg>
-              )}
+              {loading && ( <Loader />)}
             </button>
           </div>
 

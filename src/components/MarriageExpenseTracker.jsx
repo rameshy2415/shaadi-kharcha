@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { expenseAPI, receiveMoneyAPI } from "../services/api";
 import {
   MinusIcon,
@@ -6,8 +6,11 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
+import { ApplicationContext } from "../context/ApplicationContextProvider";
+import Loader from "./Loader.jsx"
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
+  const { loading, setLoading}  =  useContext(ApplicationContext)
   const [expandFlag, setExpandFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [receivedMoney, setReceivedMoney] = useState([]);
@@ -91,9 +94,12 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
+      setLoading(true)
       res = await expenseAPI.addExpense(newExpense);
       setExpenses([res.data, ...expenses]);
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error("Failed to save expense", err);
     }
 
@@ -119,9 +125,12 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
+      setLoading(true)
       res = await receiveMoneyAPI.addReceivedMoney(newReceived);
+      setLoading(false)
       setReceivedMoney([...receivedMoney, res.data]);
     } catch (err) {
+      setLoading(false)
       console.error("Failed to save receive money", err);
     }
 
@@ -353,10 +362,12 @@ const MarriageExpenseTracker = () => {
                       </div>
                     </div>
                     <button
+                     disabled={loading}
                       type="submit"
-                      className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                      className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-900"
                     >
-                      Add Expense
+                     {loading ? "Adding..." : "Add Expense"}
+                     {loading && ( <Loader />)}
                     </button>
                   </>
                 )}
@@ -370,14 +381,14 @@ const MarriageExpenseTracker = () => {
                   <p className="text-gray-500 italic">No expenses added yet</p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
+                    <table className="w-full border-collapse border border-gray-400">
                       <thead>
                         <tr className="bg-gray-50">
-                          <th className="p-2 border text-left">Date</th>
-                          <th className="p-2 border text-left">Description</th>
-                          <th className="p-2 border text-left">Category</th>
-                          <th className="p-2 border text-right">Amount</th>
-                          <th className="p-2 border text-center">Action</th>
+                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">Date</th>
+                          <th className="p-2 border border-gray-300 text-left">Description</th>
+                          <th className="p-2 border border-gray-300 text-left hidden md:table-cell">Category</th>
+                          <th className="p-2 border border-gray-300 text-right">Amount</th>
+                          <th className="p-2 border border-gray-300 text-center">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -386,22 +397,22 @@ const MarriageExpenseTracker = () => {
                             key={expense.id}
                             className="border-b hover:bg-gray-50"
                           >
-                            <td className="p-2 border">{expense.date}</td>
-                            <td className="p-2 border">
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">{expense.date}</td>
+                            <td className="p-2 border border-gray-300">
                               {expense.description}
                             </td>
-                            <td className="p-2 border">
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">
                               {expense.category || "Uncategorized"}
                             </td>
-                            <td className="p-2 border text-right">
+                            <td className="p-2 border border-gray-300 text-right">
                               {formatINR(expense.amount)}
                             </td>
-                            <td className="p-2 border text-center">
+                            <td className="p-2 border border-gray-300 text-center">
                               <button
                                 onClick={() =>
                                   deleteExpense(expense.id, expense._id)
                                 }
-                                className="text-red-500 hover:text-red-700"
+                                className="text-red-500 cursor-pointer hover:text-red-700"
                                 aria-label="Delete expense"
                               >
                                 Delete
@@ -495,9 +506,11 @@ const MarriageExpenseTracker = () => {
                     </div>
                     <button
                       type="submit"
-                      className="mt-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                      className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-300"
                     >
-                      Add Received Money
+                       {loading ? "Adding..." : " Add Received Money"}
+                       {loading && ( <Loader />)}
+                     
                     </button>
                   </>
                 )}
@@ -513,14 +526,14 @@ const MarriageExpenseTracker = () => {
                   </p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
+                    <table className="w-full border-collapse  border-gray-400">
                       <thead>
                         <tr className="bg-gray-50">
-                          <th className="p-2 border text-left">Date</th>
-                          <th className="p-2 border text-left">From</th>
-                          <th className="p-2 border text-left">Notes</th>
-                          <th className="p-2 border text-right">Amount</th>
-                          <th className="p-2 border text-center">Action</th>
+                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">Date</th>
+                          <th className="p-2 border text-left border-gray-300">From</th>
+                          <th className="p-2 border text-left border-gray-300 hidden md:table-cell">Notes</th>
+                          <th className="p-2 border text-right border-gray-300">Amount</th>
+                          <th className="p-2 border text-center border-gray-300">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -529,16 +542,16 @@ const MarriageExpenseTracker = () => {
                             key={received._id}
                             className="border-b hover:bg-gray-50"
                           >
-                            <td className="p-2 border">{received.date}</td>
-                            <td className="p-2 border">{received.from}</td>
-                            <td className="p-2 border">{received.notes}</td>
-                            <td className="p-2 border text-right">
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">{received.date}</td>
+                            <td className="p-2 border border-gray-300">{received.from}</td>
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">{received.notes}</td>
+                            <td className="p-2 border text-right border-gray-300">
                               {formatINR(received.amount)}
                             </td>
-                            <td className="p-2 border text-center">
+                            <td className="p-2 border text-center border-gray-300">
                               <button
                                 onClick={() => deleteReceived(received._id)}
-                                className="text-red-500 hover:text-red-700"
+                                className="text-red-500 cursor-pointer hover:text-red-700"
                                 aria-label="Delete received payment"
                               >
                                 Delete

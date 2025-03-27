@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { authAPI } from "../services/api";
 import { UserContext } from "../context/AuthProvider";
+import { ApplicationContext } from "../context/ApplicationContextProvider"
+import Loader from "./Loader.jsx"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ const Register = () => {
     password2: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading}  =  useContext(ApplicationContext)
   const navigate = useNavigate();
    const { setUser, setAuthFlag } = useContext(UserContext);
 
@@ -35,11 +37,6 @@ const Register = () => {
     setError("");
 
     try {
-      /* const res = await axios.post("/api/auth/register", {
-        name,
-        email,
-        password,
-      }); */
       const res = await authAPI.register({
         name,
         email,
@@ -152,9 +149,10 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
+              className="group relative w-full flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
             >
               {loading ? "Creating Account..." : "Register"}
+              {loading && ( <Loader />)}
             </button>
           </div>
 
