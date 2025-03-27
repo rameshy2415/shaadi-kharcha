@@ -1,4 +1,15 @@
+import { useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { UserContext } from "../context/AuthProvider";
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const { authFlag } = useContext(UserContext);
+
+  const expensesHandler = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 mt-15">
       <div className="text-center mb-8">
@@ -11,6 +22,17 @@ const HomePage = () => {
           ensuring your budget stays on track for your special day.
         </p>
       </div>
+
+      {authFlag && (
+        <div className="mt-4 mb-10">
+          <button
+            onClick={expensesHandler}
+            className="cursor-pointer bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+          >
+            Click to Manage Your Wedding Expenses
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full mb-10">
         <div className="bg-white p-6 rounded-lg shadow-md border border-purple-100 text-center">

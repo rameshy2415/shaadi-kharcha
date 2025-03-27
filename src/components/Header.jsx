@@ -30,10 +30,10 @@ const Header = () => {
 
   const homeHandler = () => {
     console.log("HomeHandler Click");
-    localStorage.removeItem("token");
+   /*  localStorage.removeItem("token");
     setUser(null);
     setAuthFlag(false);
-    setIsOpen(false)
+    setIsOpen(false) */
     navigate("/");
   };
 
