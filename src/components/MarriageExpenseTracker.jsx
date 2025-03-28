@@ -277,7 +277,7 @@ const MarriageExpenseTracker = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-25">
+    <div className="min-h-screen bg-gray-50 mt-15">
       {/* Main content area */}
       <div className="container mx-auto px-4 py-6">
         {/* Conditional rendering based on view state */}

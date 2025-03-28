@@ -13,6 +13,7 @@ import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Footer from "./components/Footer"
 //import HeaderWithSidebar from "./components/HeaderWithSidebar"
 
 const PrivateRoute = ({ children }) => {
@@ -28,6 +29,7 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <>
+    <div className="flex flex-col min-h-screen">
       <Router>
         <Header />
         <Routes>
@@ -44,7 +46,9 @@ function App() {
           />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
+        <Footer />
       </Router>
+      </div>
     </>
   );
 }

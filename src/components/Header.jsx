@@ -47,7 +47,7 @@ const Header = () => {
 
   return (
     <header className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
-      <div className="container flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center cursor-pointer">
           <div onClick={homeHandler}>
             <img className="size-7 object-cover" src={brandImage} alt="Brand" />
@@ -75,7 +75,7 @@ const Header = () => {
                 </button>
               </div>
 
-              {/* Logout Button (Dropdown) */}
+              {/*Profile & Logout Button (Dropdown) */}
               {isOpen && (
                 <div className="absolute -bottom-35 -left-48 bg-white shadow-lg rounded-lg border pt-1 w-60">
                   <div className="flex items-center justify-center w-full px-2 py-2 space-x-4 border-b-1 border-gray-200 ">
@@ -122,20 +122,3 @@ const Header = () => {
 };
 
 export default Header;
-
-// Icon component for the brand logo
-const WeddingRingIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-8 h-8"
-  >
-    <circle cx="8" cy="12" r="4" />
-    <circle cx="16" cy="12" r="4" />
-  </svg>
-);
