@@ -37,20 +37,20 @@ const Footer = () => {
 
         <div className="flex space-x-2 md:space-x-20">
           <Link
-            to="/"
+            to="/terms-conditions"
             className="font-small md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Privacy & Terms
           </Link>
           <Link
-            to="/"
+            to="/about"
             className="hidden md:block font-small  md:font-medium text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             About Techinsights
           </Link>
 
           <Link
-            to="/"
+            to="/privacy-policy"
             className="font-small md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Why Trust Us
@@ -64,14 +64,14 @@ const Footer = () => {
           </Link>
 
           <Link
-            to="/"
+            to="/login"
             className="hidden md:block font-small  md:font-medium text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Login
           </Link>
 
           <Link
-            to="/"
+            to="/email"
             className="font-small  md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Email us

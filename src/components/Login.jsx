@@ -52,8 +52,10 @@ const Login = () => {
     }
   };
 
+//min-h-screen
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-10">
       <div className="max-w-md w-full space-y-8  p-10 rounded-xl  bg-white shadow-xl">
         <div>
           <h2 className="mt-2 text-center text-3xl font-bold text-gray-600">

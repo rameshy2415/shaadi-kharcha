@@ -14,7 +14,11 @@ import Header from "./components/Header";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Footer from "./components/Footer"
-//import HeaderWithSidebar from "./components/HeaderWithSidebar"
+import AboutUs from "./components/AboutUs"
+import ContactUs from "./components/ContactUs";
+import EmailUs from "./components/EmailUs";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermsAndConditions from "./components/TermsAndConditions";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -36,6 +40,13 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/email" element={<EmailUs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsAndConditions />} />
+        
           <Route
             path="/dashboard"
             element={
