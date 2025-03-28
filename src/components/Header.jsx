@@ -7,7 +7,7 @@ import {
   HomeIcon,
   UserCircleIcon,
   ChevronRightIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 const Header = () => {
   const { setAuthFlag, setUser, user, authFlag } = useContext(UserContext);
@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   const managePasswordHnadler = () => {
-    alert('Feature will be available in next release')
+    alert("Feature will be available in next release");
   };
 
   const homeHandler = () => {
@@ -56,23 +56,26 @@ const Header = () => {
         <div className="text-sm">
           {!authFlag ? (
             <button
-              className="flex items-center justify-end border border-white px-1 py-0 rounded-lg text-lg space-x-1 text-white hover:cursor-pointer"
+              className="flex items-center justify-end border-1 border-white px-3 py-0 rounded-md text-lg space-x-1 text-white hover:cursor-pointer"
               onClick={loginHandler}
             >
-              <ArrowRightEndOnRectangleIcon className="h-5 w-6 text-white" />
+              {/* <ArrowRightEndOnRectangleIcon className="h-5 w-6 text-white" /> */}
               Login
             </button>
           ) : (
             <div className="relative">
-              <button
-                className="flex items-center justify-center border-2 border-white px-3 text-md md:text-lg space-x-2 text-white rounded-full hover:cursor-pointer"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {initialsName}
-              </button>
+              <div className="flex items-center justify-center size-8 rounded-full border-2 border-white cursor-pointer">
+                <button
+                  className="flex items-center justify-center cursor-pointer"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  {initialsName}
+                </button>
+              </div>
+
               {/* Logout Button (Dropdown) */}
               {isOpen && (
-                <div className="absolute -bottom-35 -left-45 bg-white shadow-lg rounded-lg border pt-1 w-60">
+                <div className="absolute -bottom-35 -left-48 bg-white shadow-lg rounded-lg border pt-1 w-60">
                   <div className="flex items-center justify-center w-full px-2 py-2 space-x-4 border-b-1 border-gray-200 ">
                     <div>
                       <UserCircleIcon className="size-8 text-pink-500" />
@@ -105,7 +108,7 @@ const Header = () => {
                       <span>Logout</span>
                     </button>
                     <ChevronRightIcon className="h-5 w-5 text-pink-500" />
-                  </div>  
+                  </div>
                 </div>
               )}
             </div>
