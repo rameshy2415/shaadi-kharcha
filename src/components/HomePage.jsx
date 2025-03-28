@@ -23,11 +23,11 @@ const HomePage = () => {
         </p>
       </div>
 
-      <div className="relative size-20 bg-amber-700 rounded-full">
+{/*       <div className="relative size-20 bg-amber-700 rounded-full">
         <div className="absolute h-10 w-50 bg-gray-500 -bottom-10 -left-30">
         
         </div>
-      </div>
+      </div> */}
 
       {authFlag && (
         <div className="mt-4 mb-10">
