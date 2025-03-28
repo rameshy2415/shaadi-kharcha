@@ -5,6 +5,7 @@ import {
   ArrowRightEndOnRectangleIcon,
   PowerIcon,
   HomeIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 const Header = () => {
   const { setAuthFlag, setUser, user, authFlag } = useContext(UserContext);
@@ -24,13 +25,13 @@ const Header = () => {
     localStorage.removeItem("token");
     setUser(null);
     setAuthFlag(false);
-    setIsOpen(false)
+    setIsOpen(false);
     navigate("/");
   };
 
   const homeHandler = () => {
     console.log("HomeHandler Click");
-   /*  localStorage.removeItem("token");
+    /*  localStorage.removeItem("token");
     setUser(null);
     setAuthFlag(false);
     setIsOpen(false) */
@@ -56,22 +57,38 @@ const Header = () => {
               Login
             </button>
           ) : (
-            <div className="relative inline-block">
+            <div className="relative">
               <button
                 className="flex items-center justify-center border-2 border-white px-3 text-md md:text-lg space-x-2 text-white rounded-full hover:cursor-pointer"
-                onClick={() => setIsOpen(!isOpen)} 
+                onClick={() => setIsOpen(!isOpen)}
               >
-                 {initialsName}
+                {initialsName}
               </button>
               {/* Logout Button (Dropdown) */}
               {isOpen && (
-                <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white shadow-lg rounded-lg border p-1 w-20">
-                  <button
-                    onClick={logoutHandler}
-                    className="flex items-center justify-center w-full px-4 py-1 text-md text-red-600 cursor-pointer hover:bg-gray-100 rounded-lg space-x-1"
-                  >
-                    <PowerIcon className="h-6 w-6 text-red-600" title="Logout"/>
-                  </button>
+                <div className="absolute -bottom-25 -left-45 bg-white shadow-lg rounded-lg border pt-1 w-60">
+                  <div className="flex items-center justify-center w-full px-2 py-2 space-x-4 border-b-1 border-gray-200 ">
+                    <div>
+                      <UserCircleIcon className="size-8 text-pink-600" />
+                    </div>
+                    <div>
+                      <p className="text-md md:text-md text-pink-600 font-bold ">
+                        {user?.name}
+                      </p>
+                      <p className="text-sm md:text-md text-pink-600  ">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      onClick={logoutHandler}
+                      className="flex items-center justify-center w-full px-4 py-1 text-md text-pink-600 cursor-pointer hover:bg-gray-100 space-x-2"
+                    >
+                      <PowerIcon className="h-5 w-5 text-pink-600 mr-2" />
+                      Logout
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
