@@ -48,10 +48,9 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="container flex items-center justify-between">
-        <div className="flex items-center">
-          {/* <HomeIcon className="h-6 w-6 text-white" onClick={homeHandler} /> */}
+        <div className="flex items-center cursor-pointer">
           <div onClick={homeHandler}>
-            <img className="w-7 h-7 object-cover " src={brandImage} alt="Brand" />
+            <img className="size-7 object-cover" src={brandImage} alt="Brand" />
           </div>
           <span className="text-md md:text-xl font-bold ml-2">
             Wedding Expense Tracker
@@ -63,7 +62,6 @@ const Header = () => {
               className="flex items-center justify-end border-1 border-white px-3 py-0 rounded-sm text-lg space-x-1 text-white cursor-pointer"
               onClick={loginHandler}
             >
-              {/* <ArrowRightEndOnRectangleIcon className="h-5 w-6 text-white" /> */}
               Login
             </button>
           ) : (
