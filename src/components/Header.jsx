@@ -6,6 +6,8 @@ import {
   PowerIcon,
   HomeIcon,
   UserCircleIcon,
+  ChevronRightIcon,
+  Cog6ToothIcon
 } from "@heroicons/react/24/outline";
 const Header = () => {
   const { setAuthFlag, setUser, user, authFlag } = useContext(UserContext);
@@ -27,6 +29,10 @@ const Header = () => {
     setAuthFlag(false);
     setIsOpen(false);
     navigate("/");
+  };
+
+  const managePasswordHnadler = () => {
+    alert('Feature will be available in next release')
   };
 
   const homeHandler = () => {
@@ -66,29 +72,40 @@ const Header = () => {
               </button>
               {/* Logout Button (Dropdown) */}
               {isOpen && (
-                <div className="absolute -bottom-25 -left-45 bg-white shadow-lg rounded-lg border pt-1 w-60">
+                <div className="absolute -bottom-35 -left-45 bg-white shadow-lg rounded-lg border pt-1 w-60">
                   <div className="flex items-center justify-center w-full px-2 py-2 space-x-4 border-b-1 border-gray-200 ">
                     <div>
-                      <UserCircleIcon className="size-8 text-pink-600" />
+                      <UserCircleIcon className="size-8 text-pink-500" />
                     </div>
                     <div>
-                      <p className="text-md md:text-md text-pink-600 font-bold ">
+                      <p className="text-md md:text-md text-pink-500 font-bold ">
                         {user?.name}
                       </p>
-                      <p className="text-sm md:text-md text-pink-600  ">
+                      <p className="text-sm md:text-md text-pink-500  ">
                         {user?.email}
                       </p>
                     </div>
                   </div>
-                  <div>
+                  <div className="flex items-center px-2 py-1 hover:bg-gray-100 border-b-1 border-gray-200 ">
+                    <button
+                      onClick={managePasswordHnadler}
+                      className="flex float-left w-full px-2 py-1 text-md text-pink-500 cursor-pointer space-x-2"
+                    >
+                      <Cog6ToothIcon className="h-5 w-5 text-pink-500  rounded-full" />
+                      <span>Manage Password</span>
+                    </button>
+                    <ChevronRightIcon className="h-5 w-5 text-pink-500" />
+                  </div>
+                  <div className="flex items-center px-2 py-1 hover:bg-gray-100">
                     <button
                       onClick={logoutHandler}
-                      className="flex items-center justify-center w-full px-4 py-1 text-md text-pink-600 cursor-pointer hover:bg-gray-100 space-x-2"
+                      className="flex float-left w-full px-2 py-1 text-md text-pink-500 cursor-pointer space-x-2"
                     >
-                      <PowerIcon className="h-5 w-5 text-pink-600 mr-2" />
-                      Logout
+                      <PowerIcon className="h-5 w-5 text-pink-500  rounded-full" />
+                      <span>Logout</span>
                     </button>
-                  </div>
+                    <ChevronRightIcon className="h-5 w-5 text-pink-500" />
+                  </div>  
                 </div>
               )}
             </div>

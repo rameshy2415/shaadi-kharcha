@@ -40,7 +40,7 @@ const HomePage = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full mb-10 mt-50">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full mb-10">
         <div className="bg-white p-6 rounded-lg shadow-md border border-purple-100 text-center">
           <div className="bg-purple-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <svg
