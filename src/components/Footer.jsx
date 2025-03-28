@@ -38,41 +38,41 @@ const Footer = () => {
         <div className="flex space-x-2 md:space-x-20">
           <Link
             to="/"
-            className="font-small md:font-medium text-gray-600  hover:text-pink-500"
+            className="font-small md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Privacy & Terms
           </Link>
           <Link
             to="/"
-            className="hidden md:block font-small  md:font-medium text-gray-600 hover:text-pink-500"
+            className="hidden md:block font-small  md:font-medium text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             About Techinsights
           </Link>
 
           <Link
             to="/"
-            className="font-small md:font-medium text-gray-600  hover:text-pink-500"
+            className="font-small md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Why Trust Us
           </Link>
 
           <Link
             to="/"
-            className="hidden md:block font-small  md:font-medium text-gray-600 hover:text-pink-500"
+            className="hidden md:block font-small  md:font-medium text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Home
           </Link>
 
           <Link
             to="/"
-            className="hidden md:block font-small  md:font-medium text-gray-600 hover:text-pink-500"
+            className="hidden md:block font-small  md:font-medium text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Login
           </Link>
 
           <Link
             to="/"
-            className="font-small  md:font-medium text-gray-600  hover:text-pink-500"
+            className="font-small  md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Email us
           </Link>
