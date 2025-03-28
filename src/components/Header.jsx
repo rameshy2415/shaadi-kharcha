@@ -56,7 +56,7 @@ const Header = () => {
         <div className="text-sm">
           {!authFlag ? (
             <button
-              className="flex items-center justify-end border-1 border-white px-3 py-0 rounded-md text-lg space-x-1 text-white hover:cursor-pointer"
+              className="flex items-center justify-end border-1 border-white px-3 py-0 rounded-sm text-lg space-x-1 text-white cursor-pointer"
               onClick={loginHandler}
             >
               {/* <ArrowRightEndOnRectangleIcon className="h-5 w-6 text-white" /> */}
