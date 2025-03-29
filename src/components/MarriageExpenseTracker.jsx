@@ -326,7 +326,7 @@ const MarriageExpenseTracker = () => {
                 }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "expenses"
-                    ? "text-purple-600 border-b-2 border-purple-600"
+                    ? "text-pink-600 border-b-2 border-pink-600"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -339,7 +339,7 @@ const MarriageExpenseTracker = () => {
                 }}
                 className={`py-3 px-2 md:px-6 text-sm  sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "received"
-                    ? "text-purple-600 border-b-2 border-purple-600"
+                    ? "text-pink-600 border-b-2 border-pink-600"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -352,7 +352,7 @@ const MarriageExpenseTracker = () => {
                 }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "summary"
-                    ? "text-purple-600 border-b-2 border-purple-600"
+                    ? "text-pink-600 border-b-2 border-pink-600"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -448,7 +448,7 @@ const MarriageExpenseTracker = () => {
                     <button
                       disabled={loading}
                       type="submit"
-                      className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-900"
+                      className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-pink-500 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-900"
                     >
                       {loading ? "Adding..." : "Add Expense"}
                       {loading && <Loader />}
@@ -600,7 +600,7 @@ const MarriageExpenseTracker = () => {
                     </div>
                     <button
                       type="submit"
-                      className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                      className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-pink-500 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-300"
                     >
                       {loading ? "Adding..." : " Add Received Money"}
                       {loading && <Loader />}
@@ -748,7 +748,7 @@ const MarriageExpenseTracker = () => {
                     <button
                       onClick={generatePDFReport}
                       disabled={loading}
-                      className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none   disabled:cursor-not-allowed disabled:bg-amber-50"
+                      className="group gap-2 relative w-full flex justify-center cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 focus:outline-none  disabled:bg-pink-400"
                     >
                       {loading ? "Generating..." : "Generate PDF Report"}
                       {loading && <Loader />}
