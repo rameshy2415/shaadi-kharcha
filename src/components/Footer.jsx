@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
 
         <div className="flex text-gray-600 text-center mx-2 md:mx-0">
-          <span>
+          <span className="text-sm">
             Registered Address: Techinsights LTD, Magnus House, 3 LowerThames
             Street, Mumbai, IND
           </span>

@@ -63,7 +63,7 @@ const Register = () => {
     <div className=" bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-10">
       <div className="max-w-md w-full space-y-8  p-10 rounded-xl bg-white shadow-xl">
         <div>
-          <h2 className="mt-2 text-center text-3xl font-bold text-gray-600">
+          <h2 className="mt-2 text-center text-3xl font-bold text-pink-600">
             Create Your Account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -150,7 +150,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
+              className="group relative w-full flex items-center justify-center py-2 px-4 border border-transparent cursor-pointer text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 focus:outline-none disabled:bg-pink-400"
             >
               {loading ? "Creating Account..." : "Register"}
               {loading && ( <Loader />)}
@@ -160,7 +160,7 @@ const Register = () => {
           <div className="text-sm text-center">
             <Link
               to="/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-pink-500 hover:text-pink-600"
             >
               Already have an account? Sign in
             </Link>

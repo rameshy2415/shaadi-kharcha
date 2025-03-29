@@ -44,9 +44,9 @@ const Header = () => {
     setIsOpen(false) */
     navigate("/");
   };
-
+//bg-gradient-to-r from-pink-500 to-purple-600
   return (
-    <header className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
+    <header className="bg-pink-500  text-white p-4 shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center justify-between">
         <div className="flex items-center cursor-pointer">
           <div onClick={homeHandler}>
@@ -59,7 +59,7 @@ const Header = () => {
         <div className="text-sm">
           {!authFlag ? (
             <button
-              className="flex items-center justify-end border-1 border-white px-3 py-0 rounded-sm text-lg space-x-1 text-white cursor-pointer"
+              className="flex items-center justify-center py-1 border-1 border-white px-3  rounded-sm md:text-lg md:py-0 space-x-1 text-white cursor-pointer"
               onClick={loginHandler}
             >
               Login

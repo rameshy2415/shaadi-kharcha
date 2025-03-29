@@ -13,7 +13,7 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 mt-15">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-purple-600 mb-4">
+        <h1 className="text-4xl font-bold text-pink-600 mb-4">
           Welcome to Wedding Expense Tracker
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -33,7 +33,7 @@ const HomePage = () => {
         <div className="mt-4 mb-10">
           <button
             onClick={expensesHandler}
-            className="cursor-pointer bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+            className="cursor-pointer bg-pink-500  text-white px-8 py-3 rounded-full font-semibold hover:bg-pink-600 transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-300"
           >
             Click to Manage Your Wedding Expenses
           </button>
@@ -51,7 +51,7 @@ const HomePage = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-8 h-8 text-purple-600"
+              className="w-8 h-8 text-pink-600"
             >
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
@@ -72,7 +72,7 @@ const HomePage = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-8 h-8 text-purple-600"
+              className="w-8 h-8 text-pink-600"
             >
               <rect x="2" y="5" width="20" height="14" rx="2" />
               <line x1="2" y1="10" x2="22" y2="10" />
@@ -95,7 +95,7 @@ const HomePage = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-8 h-8 text-purple-600"
+              className="w-8 h-8 text-pink-600"
             >
               <line x1="12" y1="2" x2="12" y2="6" />
               <line x1="12" y1="18" x2="12" y2="22" />
