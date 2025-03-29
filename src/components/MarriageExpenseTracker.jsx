@@ -33,9 +33,10 @@ const MarriageExpenseTracker = () => {
 
   // Categories for expenses
   const categories = [
+    "Attire",
+    "Utensils",
     "Venue",
     "Catering",
-    "Attire",
     "Photography",
     "Decoration",
     "Entertainment",

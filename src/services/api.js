@@ -41,7 +41,8 @@ api.interceptors.response.use(
 export const authAPI = {
   register: userData => api.post('/auth/register', userData),
   login: userData => api.post('/auth/login', userData),
-  getCurrentUser: () => api.get('/auth/user')
+  getCurrentUser: () => api.get('/auth/user'),
+  resetPassword: (userData) => api.post('/auth/forgot-password',userData)
 };
 
 // Expenses API calls
