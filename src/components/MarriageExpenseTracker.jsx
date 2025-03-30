@@ -4,7 +4,6 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
   TrashIcon,
-  PencilIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { ApplicationContext } from "../context/ApplicationContextProvider";
@@ -134,8 +133,8 @@ const MarriageExpenseTracker = () => {
     });
   };
 
-  // Add new received money
-  const addReceivedMoney = async (e) => {
+  // Add/Edit new received money
+  const addOrUpdateReceivedMoney = async (e) => {
     e.preventDefault();
     if (!receivedFormData.from || !receivedFormData.amount) return;
 
@@ -148,11 +147,21 @@ const MarriageExpenseTracker = () => {
     try {
       let res;
       setLoading(true);
-      res = await receiveMoneyAPI.addReceivedMoney(newReceived);
+
+      if(editFlag){
+        res = await receiveMoneyAPI.updateReceivedMoney(receivedFormData._id,receivedFormData);
+        setReceivedMoney(receivedMoney.filter(item=> item._id!== receivedFormData._id));
+      }else{
+        res = await receiveMoneyAPI.addReceivedMoney(newReceived);
+      }
+      
+
       setLoading(false);
-      setReceivedMoney([...receivedMoney, res.data]);
+      setEditFlag(false)
+      setReceivedMoney(prevReceivedMoney=> [...prevReceivedMoney, res.data]);
     } catch (err) {
       setLoading(false);
+      setEditFlag(false)
       console.error("Failed to save receive money", err);
     }
 
@@ -195,6 +204,15 @@ const MarriageExpenseTracker = () => {
     } catch (err) {
       console.error("Failed to delete received money", err);
     }
+  };
+
+  // Edit received money
+  const editReceived = async (receiveMoney) => {
+    setExpandFlag(true);
+    setEditFlag(true);
+    setReceivedFormData({
+      ...receiveMoney,
+    });
   };
 
   // Calculate totals
@@ -567,14 +585,14 @@ const MarriageExpenseTracker = () => {
           {activeTab === "received" && (
             <div>
               <form
-                onSubmit={addReceivedMoney}
+                onSubmit={addOrUpdateReceivedMoney}
                 className="bg-white p-6 rounded-lg shadow-md mb-6"
               >
                 <h2
                   className="flex justify-between text-xl font-semibold  text-gray-800 hover:cursor-pointer"
                   onClick={() => setExpandFlag((prev) => !prev)}
                 >
-                  <span>Add Money Received</span>
+                  <span>{editFlag ? 'Update Money Received': 'Add Money Received'} </span>
                   {expandFlag ? (
                     <ChevronUpIcon className="h-6 w-6" />
                   ) : (
@@ -641,9 +659,15 @@ const MarriageExpenseTracker = () => {
                     </div>
                     <button
                       type="submit"
-                      className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-pink-500 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                      className="flex items-center justify-center gap-3 mt-4 cursor-pointer bg-pink-500 text-white px-4 py-2 rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-pink-600"
                     >
-                      {loading ? "Adding..." : " Add Received Money"}
+                      {loading
+                        ? editFlag
+                          ? "Updating..."
+                          : "Adding..."
+                        : editFlag
+                        ? "Update Received Money"
+                        : "Add Received Money"}
                       {loading && <Loader />}
                     </button>
                   </>
@@ -699,13 +723,24 @@ const MarriageExpenseTracker = () => {
                               {formatINR(received.amount)}
                             </td>
                             <td className="p-2 border text-center border-gray-300">
-                              <button
+                              {/* <button
                                 onClick={() => deleteReceived(received._id)}
                                 className="text-red-500 cursor-pointer hover:text-red-700"
                                 aria-label="Delete received payment"
                               >
                                 Delete
-                              </button>
+                              </button> */}
+
+                              <div className="flex items-center justify-center gap-x-2">
+                                <PencilSquareIcon
+                                  className="size-4 md:size-5 cursor-pointer border-0 text-blue-500 hover:text-blue-700"
+                                  onClick={() => editReceived(received)}
+                                />
+                                <TrashIcon
+                                  className="size-4 md:size-5 cursor-pointer border-0 text-red-500 hover:text-red-700"
+                                  onClick={() => deleteReceived(received._id)}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))}
