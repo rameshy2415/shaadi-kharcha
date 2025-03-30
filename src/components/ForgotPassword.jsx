@@ -19,19 +19,24 @@ const ForgotPassword = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      const response =  await authAPI.resetPassword({ email });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
+      const response =  await authAPI.forgetPassword({ email });
+
+      console.log('response', response)
+      setMessage({ 
+        type: 'success', 
+        text: 'Password reset email sent! Please check your inbox.' 
+      });
+      setEmail('');
+
+      /* if (response.status == 200) {
         setMessage({ 
           type: 'success', 
           text: 'Password reset email sent! Please check your inbox.' 
         });
         setEmail('');
       } else {
-        setMessage({ type: 'error', text: data.message || 'Failed to send reset email' });
-      }
+        setMessage({ type: 'error', text: response.data.message || 'Failed to send reset email' });
+      } */
     } catch (error) {
       setMessage({ type: 'error', text: 'Server error. Please try again later.' });
       console.error('Error:', error);
@@ -91,8 +96,8 @@ const ForgotPassword = () => {
                 disabled={isSubmitting}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white cursor-pointer ${
                   isSubmitting 
-                    ? 'bg-purple-300 cursor-not-allowed' 
-                    : 'bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
+                    ? 'bg-pink-300 cursor-not-allowed' 
+                    : 'bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
                 }`}
               >
                 {isSubmitting ? (

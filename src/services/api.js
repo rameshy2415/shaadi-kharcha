@@ -42,7 +42,8 @@ export const authAPI = {
   register: userData => api.post('/auth/register', userData),
   login: userData => api.post('/auth/login', userData),
   getCurrentUser: () => api.get('/auth/user'),
-  resetPassword: (userData) => api.post('/auth/forgot-password',userData)
+  forgetPassword: (userData) => api.post('/auth/forgot-password',userData),
+  resetPassword: (resetToken, userData) => api.put(`/auth/reset-password/${resetToken}`,userData)
 };
 
 // Expenses API calls
