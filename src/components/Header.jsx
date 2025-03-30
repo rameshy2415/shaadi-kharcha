@@ -14,7 +14,7 @@ const Header = () => {
   const { setAuthFlag, setUser, user, authFlag } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
 
-  const initialsName = user?.name.split(" ").map((word) => word.charAt(0));
+  const initialsName = user?.name?.split(" ").map((word) => word.charAt(0));
 
   const navigate = useNavigate();
 

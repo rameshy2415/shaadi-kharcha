@@ -6,7 +6,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { UserContext } from "./context/AuthProvider";
 
 import MarriageExpenseTracker from "./components/MarriageExpenseTracker";
 import HomePage from "./components/HomePage";
@@ -24,11 +23,6 @@ import ResetPassword from "./components/ResetPassword";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  /* console.log("Token", token);
-  const user = localStorage.getItem("user");
-  const { setAuthFlag, setUser } = useContext(UserContext);
-  setUser(user);
-  token ? setAuthFlag(true) : setAuthFlag(false); */
   return token ? children : <Navigate to="/login" />;
 };
 

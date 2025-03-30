@@ -11,9 +11,13 @@ import Loader from "./Loader.jsx";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
 
+import { UserContext } from "../context/AuthProvider";
+
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
-  const { loading, setLoading, message, setMessage } = useContext(ApplicationContext);
+  const { loading, setLoading, message, setMessage } =
+    useContext(ApplicationContext);
+  const { setAuthFlag, setUser } = useContext(UserContext);
   const [expandFlag, setExpandFlag] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
@@ -50,20 +54,31 @@ const MarriageExpenseTracker = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const res = await expenseAPI.getExpenses();
-        setExpenses(res.data);
+        let res;
 
-        const res1 = await receiveMoneyAPI.getReceivedMoney();
-        setReceivedMoney(res1.data);
-        //setLoading(false);
+        if (activeTab === "expenses") {
+          res = await expenseAPI.getExpenses();
+          setExpenses(res.data);
+        }
+
+        if (activeTab === "received") {
+          res = await receiveMoneyAPI.getReceivedMoney();
+          setReceivedMoney(res.data);
+        }
+
+        const token = localStorage.getItem("token");
+        if (token) {
+          const user = JSON.parse(localStorage.getItem("user"));
+          setUser({ ...user });
+          token ? setAuthFlag(true) : setAuthFlag(false);
+        }
       } catch (err) {
         console.error("Failed to fetch expenses", err);
-        //setLoading(false);
       }
     };
 
     fetchExpenses();
-  }, []);
+  }, [activeTab]);
 
   // Handle expense form changes
   const handleExpenseChange = (e) => {
@@ -87,7 +102,7 @@ const MarriageExpenseTracker = () => {
   const addOrUpdateExpense = async (e) => {
     e.preventDefault();
     if (!expenseFormData.description || !expenseFormData.amount) return;
-    setMessage({ type: '', text: '' });
+    setMessage({ type: "", text: "" });
 
     const newExpense = {
       ...expenseFormData,
@@ -98,24 +113,24 @@ const MarriageExpenseTracker = () => {
     try {
       let res;
       setLoading(true);
-      let msg = '';
+      let msg = "";
       if (editFlag) {
         res = await expenseAPI.updateExpense(
           expenseFormData._id,
           expenseFormData
         );
-        msg = 'updated';
+        msg = "updated";
         setExpenses(
           expenses.filter((expense) => expense._id !== expenseFormData._id)
         );
       } else {
         res = await expenseAPI.addExpense(newExpense);
-        msg = 'Added';
+        msg = "Added";
       }
-     
-      setMessage({ 
-        type: 'success', 
-        text: 'Successfully '+ msg 
+
+      setMessage({
+        type: "success",
+        text: "Successfully " + msg,
       });
       setExpenses((prevExpenses) => [res.data, ...prevExpenses]);
       setLoading(false);
@@ -124,9 +139,11 @@ const MarriageExpenseTracker = () => {
       setLoading(false);
       setEditFlag(false);
       console.error("Failed to edit/save expense", err);
-      setMessage({ 
-        type: 'error', 
-        text: err.response?.data?.message || "Server error. Please try again later." 
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Server error. Please try again later.",
       });
     }
 
@@ -137,16 +154,16 @@ const MarriageExpenseTracker = () => {
       category: "",
       date: new Date().toISOString().split("T")[0],
     });
-    setTimeout(()=>{
-      setMessage({ type: '', text: '' });
-    },3000)
+    setTimeout(() => {
+      setMessage({ type: "", text: "" });
+    }, 3000);
   };
 
   // Add/Edit new received money
   const addOrUpdateReceivedMoney = async (e) => {
     e.preventDefault();
     if (!receivedFormData.from || !receivedFormData.amount) return;
-    setMessage({ type: '', text: '' });
+    setMessage({ type: "", text: "" });
     const newReceived = {
       id: Date.now(),
       ...receivedFormData,
@@ -155,7 +172,7 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
-      let msg = '';
+      let msg = "";
       setLoading(true);
 
       if (editFlag) {
@@ -163,17 +180,17 @@ const MarriageExpenseTracker = () => {
           receivedFormData._id,
           receivedFormData
         );
-        msg = 'updated';
+        msg = "updated";
         setReceivedMoney(
           receivedMoney.filter((item) => item._id !== receivedFormData._id)
         );
       } else {
         res = await receiveMoneyAPI.addReceivedMoney(newReceived);
-        msg = 'Added';
+        msg = "Added";
       }
-      setMessage({ 
-        type: 'success', 
-        text: 'Successfully '+ msg 
+      setMessage({
+        type: "success",
+        text: "Successfully " + msg,
       });
       setLoading(false);
       setEditFlag(false);
@@ -182,9 +199,11 @@ const MarriageExpenseTracker = () => {
       setLoading(false);
       setEditFlag(false);
       console.error("Failed to save receive money", err);
-      setMessage({ 
-        type: 'error', 
-        text: err.response?.data?.message || "Server error. Please try again later." 
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Server error. Please try again later.",
       });
     }
 
@@ -195,31 +214,33 @@ const MarriageExpenseTracker = () => {
       notes: "",
       date: new Date().toISOString().split("T")[0],
     });
-    setTimeout(()=>{
-      setMessage({ type: '', text: '' });
-    },3000)
+    setTimeout(() => {
+      setMessage({ type: "", text: "" });
+    }, 3000);
   };
 
   // Delete expense
   const deleteExpense = async (_id) => {
-    setMessage({ type: '', text: '' });
+    setMessage({ type: "", text: "" });
     try {
       await expenseAPI.deleteExpense(_id);
-      setMessage({ 
-        type: 'success', 
-        text: 'Successfully deleted' 
+      setMessage({
+        type: "success",
+        text: "Successfully deleted",
       });
       setExpenses(expenses.filter((expense) => expense._id !== _id));
     } catch (err) {
       console.error("Failed to delete expense", err);
-      setMessage({ 
-        type: 'error', 
-        text: err.response?.data?.message || "Server error. Please try again later." 
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Server error. Please try again later.",
       });
     }
-    setTimeout(()=>{
-      setMessage({ type: '', text: '' });
-    },3000)
+    setTimeout(() => {
+      setMessage({ type: "", text: "" });
+    }, 3000);
   };
 
   // Edit expense
@@ -233,26 +254,28 @@ const MarriageExpenseTracker = () => {
 
   // Delete received money
   const deleteReceived = async (id) => {
-    setMessage({ type: '', text: '' });
+    setMessage({ type: "", text: "" });
     try {
       await receiveMoneyAPI.deleteReceivedMoney(id);
-      setMessage({ 
-        type: 'success', 
-        text: 'Successfully deleted' 
+      setMessage({
+        type: "success",
+        text: "Successfully deleted",
       });
       setReceivedMoney(
         receivedMoney.filter((receivedMoney) => receivedMoney._id !== id)
       );
     } catch (err) {
       console.error("Failed to delete received money", err);
-      setMessage({ 
-        type: 'error', 
-        text: err.response?.data?.message || "Server error. Please try again later." 
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Server error. Please try again later.",
       });
     }
-    setTimeout(()=>{
-      setMessage({ type: '', text: '' });
-    },3000)
+    setTimeout(() => {
+      setMessage({ type: "", text: "" });
+    }, 3000);
   };
 
   // Edit received money
@@ -453,14 +476,13 @@ const MarriageExpenseTracker = () => {
             </div>
           </div>
 
-
           {/* Success/Error message */}
           {message.text && (
-            <div 
+            <div
               className={`max-w-sm mb-2 p-3 rounded text-center mx-auto text-sm md:text-md ${
-                message.type === 'success' 
-                  ? 'bg-green-400 text-white border border-green-200' 
-                  : 'bg-red-400 text-white border border-red-200'
+                message.type === "success"
+                  ? "bg-green-400 text-white border border-green-200"
+                  : "bg-red-400 text-white border border-red-200"
               }`}
             >
               {message.text}
