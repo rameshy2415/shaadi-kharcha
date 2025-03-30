@@ -63,7 +63,7 @@ const Register = () => {
     <div className=" bg-gradient-to-b from-purple-50 to-pink-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-10">
       <div className="max-w-md w-full space-y-8  p-10 rounded-xl bg-white shadow-sm">
         <div>
-          <h2 className="mt-2 text-center text-3xl font-bold text-pink-600">
+          <h2 className="mt-2 text-center text-4xl font-semibold text-gray-800">
             Create Your Account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -160,7 +160,7 @@ const Register = () => {
           <div className="text-sm text-center">
             <Link
               to="/login"
-              className="font-medium text-pink-500 hover:text-pink-600"
+              className="font-medium text-gray-600 hover:text-pink-600"
             >
               Already have an account? Sign in
             </Link>

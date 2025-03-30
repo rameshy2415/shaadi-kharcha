@@ -92,7 +92,7 @@ const MarriageExpenseTracker = () => {
       amount: parseFloat(expenseFormData.amount),
     };
 
-    console.log("New Expenses data", { ...newExpense });
+    //console.log("New Expenses data", { ...newExpense });
     //setExpenses([...expenses, newExpense]);
 
     try {

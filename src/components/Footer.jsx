@@ -31,7 +31,7 @@ const Footer = () => {
           </span>
         </div>
 
-        <div className="flex space-x-4 text-center text-pink-500 mx-2 md:mx-0">
+        <div className="flex space-x-4 text-center text-gray-600 mx-2 md:mx-0">
           <span className="text-sm">
             © {new Date().getFullYear()} Techinsights Community. All Rights
             Reserved

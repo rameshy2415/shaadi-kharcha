@@ -46,11 +46,11 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center mt-10">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="px-6 py-8 sm:p-10">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-pink-500 mb-1">
+            <h2 className="text-4xl font-semibold text-gray-800 mb-1">
               Forgot Password
             </h2>
             <p className="text-sm text-gray-600 mb-6">
@@ -84,7 +84,7 @@ const ForgotPassword = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                   placeholder="you@example.com"
                 />
               </div>
@@ -115,7 +115,7 @@ const ForgotPassword = () => {
             </div>
             
             <div className="text-sm text-center">
-              <Link to="/login" className="font-medium text-pink-500 hover:text-pink-600">
+              <Link to="/login" className="font-medium text-gray-600 hover:text-pink-600">
                 Back to Login
               </Link>
             </div>

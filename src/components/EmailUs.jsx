@@ -62,7 +62,7 @@ const EmailUs = () => {
   return (
     <div className="container mx-auto px-4 py-12 mt-10">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">Email Us</h1>
+        <h1 className="text-4xl font-semibold text-gray-800 mb-4">Email Us</h1>
         <p className="text-gray-600 max-w-2xl mx-auto text-lg">
           Send a direct email to our support team. We'll get back to you as soon
           as possible.
