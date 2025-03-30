@@ -97,7 +97,7 @@ const Header = () => {
                       className="flex float-left w-full px-2 py-1 text-md  cursor-pointer space-x-2"
                     >
                       <Cog6ToothIcon className="h-5 w-5   rounded-full" />
-                      <span>Manage Password</span>
+                      <span>Manage profile</span>
                     </button>
                     <ChevronRightIcon className="h-5 w-5 " />
                   </div>
