@@ -3,10 +3,10 @@ import { useState, createContext } from "react";
 export const ApplicationContext = createContext();
 
 const ApplicationContextProvider = ({ children }) => {
-  //const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
   return (
-    <ApplicationContext.Provider value={{ loading, setLoading }}>
+    <ApplicationContext.Provider value={{ loading, setLoading, message, setMessage }}>
       {children}
     </ApplicationContext.Provider>
   );

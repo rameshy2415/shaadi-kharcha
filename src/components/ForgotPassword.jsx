@@ -19,9 +19,7 @@ const ForgotPassword = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      const response =  await authAPI.forgetPassword({ email });
-
-      console.log('response', response)
+      await authAPI.forgetPassword({ email });
       setMessage({ 
         type: 'success', 
         text: 'Password reset email sent! Please check your inbox.' 

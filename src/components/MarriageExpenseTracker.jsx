@@ -13,7 +13,7 @@ import { autoTable } from "jspdf-autotable";
 
 const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
-  const { loading, setLoading } = useContext(ApplicationContext);
+  const { loading, setLoading, message, setMessage } = useContext(ApplicationContext);
   const [expandFlag, setExpandFlag] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
@@ -87,6 +87,7 @@ const MarriageExpenseTracker = () => {
   const addOrUpdateExpense = async (e) => {
     e.preventDefault();
     if (!expenseFormData.description || !expenseFormData.amount) return;
+    setMessage({ type: '', text: '' });
 
     const newExpense = {
       ...expenseFormData,
@@ -97,24 +98,25 @@ const MarriageExpenseTracker = () => {
     try {
       let res;
       setLoading(true);
-
+      let msg = '';
       if (editFlag) {
-        console.log("About  to update expenses data", expenseFormData);
         res = await expenseAPI.updateExpense(
           expenseFormData._id,
           expenseFormData
         );
-        console.log(
-          "Filtered",
-          expenses.filter((expense) => expense._id !== expenseFormData._id)
-        );
+        msg = 'updated';
         setExpenses(
           expenses.filter((expense) => expense._id !== expenseFormData._id)
         );
       } else {
         res = await expenseAPI.addExpense(newExpense);
+        msg = 'Added';
       }
-
+     
+      setMessage({ 
+        type: 'success', 
+        text: 'Successfully '+ msg 
+      });
       setExpenses((prevExpenses) => [res.data, ...prevExpenses]);
       setLoading(false);
       setEditFlag(false);
@@ -122,6 +124,10 @@ const MarriageExpenseTracker = () => {
       setLoading(false);
       setEditFlag(false);
       console.error("Failed to edit/save expense", err);
+      setMessage({ 
+        type: 'error', 
+        text: err.response?.data?.message || "Server error. Please try again later." 
+      });
     }
 
     // Reset form data after submission
@@ -131,13 +137,16 @@ const MarriageExpenseTracker = () => {
       category: "",
       date: new Date().toISOString().split("T")[0],
     });
+    setTimeout(()=>{
+      setMessage({ type: '', text: '' });
+    },3000)
   };
 
   // Add/Edit new received money
   const addOrUpdateReceivedMoney = async (e) => {
     e.preventDefault();
     if (!receivedFormData.from || !receivedFormData.amount) return;
-
+    setMessage({ type: '', text: '' });
     const newReceived = {
       id: Date.now(),
       ...receivedFormData,
@@ -146,23 +155,37 @@ const MarriageExpenseTracker = () => {
 
     try {
       let res;
+      let msg = '';
       setLoading(true);
 
-      if(editFlag){
-        res = await receiveMoneyAPI.updateReceivedMoney(receivedFormData._id,receivedFormData);
-        setReceivedMoney(receivedMoney.filter(item=> item._id!== receivedFormData._id));
-      }else{
+      if (editFlag) {
+        res = await receiveMoneyAPI.updateReceivedMoney(
+          receivedFormData._id,
+          receivedFormData
+        );
+        msg = 'updated';
+        setReceivedMoney(
+          receivedMoney.filter((item) => item._id !== receivedFormData._id)
+        );
+      } else {
         res = await receiveMoneyAPI.addReceivedMoney(newReceived);
+        msg = 'Added';
       }
-      
-
+      setMessage({ 
+        type: 'success', 
+        text: 'Successfully '+ msg 
+      });
       setLoading(false);
-      setEditFlag(false)
-      setReceivedMoney(prevReceivedMoney=> [...prevReceivedMoney, res.data]);
+      setEditFlag(false);
+      setReceivedMoney((prevReceivedMoney) => [...prevReceivedMoney, res.data]);
     } catch (err) {
       setLoading(false);
-      setEditFlag(false)
+      setEditFlag(false);
       console.error("Failed to save receive money", err);
+      setMessage({ 
+        type: 'error', 
+        text: err.response?.data?.message || "Server error. Please try again later." 
+      });
     }
 
     // Reset form data after submission
@@ -172,16 +195,31 @@ const MarriageExpenseTracker = () => {
       notes: "",
       date: new Date().toISOString().split("T")[0],
     });
+    setTimeout(()=>{
+      setMessage({ type: '', text: '' });
+    },3000)
   };
 
   // Delete expense
   const deleteExpense = async (_id) => {
+    setMessage({ type: '', text: '' });
     try {
       await expenseAPI.deleteExpense(_id);
+      setMessage({ 
+        type: 'success', 
+        text: 'Successfully deleted' 
+      });
       setExpenses(expenses.filter((expense) => expense._id !== _id));
     } catch (err) {
       console.error("Failed to delete expense", err);
+      setMessage({ 
+        type: 'error', 
+        text: err.response?.data?.message || "Server error. Please try again later." 
+      });
     }
+    setTimeout(()=>{
+      setMessage({ type: '', text: '' });
+    },3000)
   };
 
   // Edit expense
@@ -195,15 +233,26 @@ const MarriageExpenseTracker = () => {
 
   // Delete received money
   const deleteReceived = async (id) => {
+    setMessage({ type: '', text: '' });
     try {
-      console.info("Id to be deleted", id);
       await receiveMoneyAPI.deleteReceivedMoney(id);
+      setMessage({ 
+        type: 'success', 
+        text: 'Successfully deleted' 
+      });
       setReceivedMoney(
         receivedMoney.filter((receivedMoney) => receivedMoney._id !== id)
       );
     } catch (err) {
       console.error("Failed to delete received money", err);
+      setMessage({ 
+        type: 'error', 
+        text: err.response?.data?.message || "Server error. Please try again later." 
+      });
     }
+    setTimeout(()=>{
+      setMessage({ type: '', text: '' });
+    },3000)
   };
 
   // Edit received money
@@ -322,6 +371,12 @@ const MarriageExpenseTracker = () => {
     doc.save("Marriage_Expenses_Report.pdf");
   };
 
+  const tabChangeHandler = (value) => {
+    setActiveTab(value);
+    setExpandFlag(false);
+    setEditFlag(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 mt-15">
       {/* Main content area */}
@@ -366,11 +421,7 @@ const MarriageExpenseTracker = () => {
           <div className="bg-white rounded-t-lg shadow-md mb-6">
             <div className="flex justify-around md:justify-start flex-wrap ">
               <button
-                onClick={() => {
-                  setActiveTab("expenses");
-                  setExpandFlag(false);
-                  setEditFlag(false);
-                }}
+                onClick={() => tabChangeHandler("expenses")}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "expenses"
                     ? "text-pink-600 border-b-2 border-pink-600"
@@ -380,11 +431,7 @@ const MarriageExpenseTracker = () => {
                 Expenses
               </button>
               <button
-                onClick={() => {
-                  setActiveTab("received");
-                  setExpandFlag(false);
-                  setEditFlag(false);
-                }}
+                onClick={() => tabChangeHandler("received")}
                 className={`py-3 px-2 md:px-6 text-sm  sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "received"
                     ? "text-pink-600 border-b-2 border-pink-600"
@@ -394,11 +441,7 @@ const MarriageExpenseTracker = () => {
                 Received Money
               </button>
               <button
-                onClick={() => {
-                  setActiveTab("summary");
-                  setExpandFlag(false);
-                  setEditFlag(false);
-                }}
+                onClick={() => tabChangeHandler("summary")}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "summary"
                     ? "text-pink-600 border-b-2 border-pink-600"
@@ -409,6 +452,20 @@ const MarriageExpenseTracker = () => {
               </button>
             </div>
           </div>
+
+
+          {/* Success/Error message */}
+          {message.text && (
+            <div 
+              className={`max-w-sm mb-2 p-3 rounded text-center mx-auto text-sm md:text-md ${
+                message.type === 'success' 
+                  ? 'bg-green-400 text-white border border-green-200' 
+                  : 'bg-red-400 text-white border border-red-200'
+              }`}
+            >
+              {message.text}
+            </div>
+          )}
 
           {/* Expenses Tab */}
           {activeTab === "expenses" && (
@@ -592,7 +649,9 @@ const MarriageExpenseTracker = () => {
                   className="flex justify-between text-xl font-semibold  text-gray-800 hover:cursor-pointer"
                   onClick={() => setExpandFlag((prev) => !prev)}
                 >
-                  <span>{editFlag ? 'Update Money Received': 'Add Money Received'} </span>
+                  <span>
+                    {editFlag ? "Update Money Received" : "Add Money Received"}{" "}
+                  </span>
                   {expandFlag ? (
                     <ChevronUpIcon className="h-6 w-6" />
                   ) : (
