@@ -9,14 +9,17 @@ const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
   return (
     <footer className="bg-gray-50 border-t border-gray-200 py-6 mt-auto">
       <div className="container mx-auto px-4 flex flex-col justify-between items-center space-y-4 gap-y-2">
-        <div className="flex items-center flex-col md:flex-row space-x-2 cursor-pointer text-gray-600"  onClick={scrollToTop} >
+        <div
+          className="flex items-center flex-col md:flex-row space-x-2 cursor-pointer text-gray-600"
+          onClick={scrollToTop}
+        >
           <ArrowUpIcon className="size-5 animate-bounce" />{" "}
           <span>Back to Top</span>
         </div>
@@ -28,7 +31,7 @@ const Footer = () => {
           </span>
         </div>
 
-        <div className="flex space-x-4 text-center mx-2 md:mx-0">
+        <div className="flex space-x-4 text-center text-pink-500 mx-2 md:mx-0">
           <span className="text-sm">
             © {new Date().getFullYear()} Techinsights Community. All Rights
             Reserved
@@ -38,7 +41,7 @@ const Footer = () => {
         <div className="flex space-x-2 md:space-x-20">
           <Link
             to="/terms-conditions"
-            className="font-small md:font-medium text-gray-800  hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
+            className="font-small md:font-medium  text-gray-800 hover:text-pink-500 bg-gray-200 py-1 px-2 rounded-md"
           >
             Privacy & Terms
           </Link>
@@ -81,16 +84,19 @@ const Footer = () => {
         <div className="flex space-x-4">
           <a
             href="#"
-            className="text-gray-500 hover:text-pink-500 transition-colors"
+            className="text-pink-500 hover:text-pink-600 transition-colors"
           >
             <Instagram size={20} />
           </a>
-          <a href="#" className="text-gtext-pink-500 transition-colors">
+          <a
+            href="#"
+            className="text-pink-500 hover:text-pink-600 transition-colors"
+          >
             <Facebook size={20} />
           </a>
           <a
             href="#"
-            className="text-gray-500 hover:text-pink-500 transition-colors"
+            className="text-pink-500 hover:text-pink-600 transition-colors"
           >
             <Twitter size={20} />
           </a>

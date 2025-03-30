@@ -60,8 +60,8 @@ const Register = () => {
   };
 //min-h-screen
   return (
-    <div className=" bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-10">
-      <div className="max-w-md w-full space-y-8  p-10 rounded-xl bg-white shadow-xl">
+    <div className=" bg-gradient-to-b from-purple-50 to-pink-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-10">
+      <div className="max-w-md w-full space-y-8  p-10 rounded-xl bg-white shadow-sm">
         <div>
           <h2 className="mt-2 text-center text-3xl font-bold text-pink-600">
             Create Your Account

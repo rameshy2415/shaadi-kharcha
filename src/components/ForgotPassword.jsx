@@ -46,8 +46,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center mt-10">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="px-6 py-8 sm:p-10">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-pink-500 mb-1">

@@ -121,8 +121,8 @@ const ResetPassword = () => {
   // Render invalid token message
   if (!tokenValid) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden p-8 text-center">
+      <div className="bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center mt-10">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-sm overflow-hidden p-8 text-center">
           <div className="text-red-500 mb-4">
             <svg className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -142,8 +142,8 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-gradient-to-b from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center mt-10">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="px-6 py-8 sm:p-10">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 mb-1">
@@ -227,7 +227,7 @@ const ResetPassword = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md cursor-pointer shadow-sm text-sm font-medium text-white ${
                   isSubmitting 
                     ? 'bg-pink-300 cursor-not-allowed' 
                     : 'bg-pink-500 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-600'

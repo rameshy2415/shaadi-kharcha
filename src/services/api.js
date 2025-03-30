@@ -62,4 +62,9 @@ export const receiveMoneyAPI = {
   deleteReceivedMoney: id => api.delete(`/receivemoney/${id}`)
 };
 
+// Send Mail API calls
+export const sendEmailAPI = {
+  sendMail: mailData => api.post('/sent-mail', mailData),
+};
+
 export default api;
