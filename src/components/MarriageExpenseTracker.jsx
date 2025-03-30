@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { expenseAPI, receiveMoneyAPI } from "../services/api";
 import {
-  MinusIcon,
-  PlusIcon,
   ChevronUpIcon,
   ChevronDownIcon,
+  TrashIcon,
+  PencilIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { ApplicationContext } from "../context/ApplicationContextProvider";
 import Loader from "./Loader.jsx";
@@ -15,6 +16,7 @@ const MarriageExpenseTracker = () => {
   // State for expenses, received payments, and form inputs
   const { loading, setLoading } = useContext(ApplicationContext);
   const [expandFlag, setExpandFlag] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [receivedMoney, setReceivedMoney] = useState([]);
   const [expenseFormData, setExpenseFormData] = useState({
@@ -82,8 +84,8 @@ const MarriageExpenseTracker = () => {
     });
   };
 
-  // Add new expense
-  const addExpense = async (e) => {
+  // Add/Edit new expense
+  const addOrUpdateExpense = async (e) => {
     e.preventDefault();
     if (!expenseFormData.description || !expenseFormData.amount) return;
 
@@ -91,19 +93,36 @@ const MarriageExpenseTracker = () => {
       ...expenseFormData,
       amount: parseFloat(expenseFormData.amount),
     };
-
-    //console.log("New Expenses data", { ...newExpense });
     //setExpenses([...expenses, newExpense]);
 
     try {
       let res;
       setLoading(true);
-      res = await expenseAPI.addExpense(newExpense);
-      setExpenses([res.data, ...expenses]);
+
+      if (editFlag) {
+        console.log("About  to update expenses data", expenseFormData);
+        res = await expenseAPI.updateExpense(
+          expenseFormData._id,
+          expenseFormData
+        );
+        console.log(
+          "Filtered",
+          expenses.filter((expense) => expense._id !== expenseFormData._id)
+        );
+        setExpenses(
+          expenses.filter((expense) => expense._id !== expenseFormData._id)
+        );
+      } else {
+        res = await expenseAPI.addExpense(newExpense);
+      }
+
+      setExpenses((prevExpenses) => [res.data, ...prevExpenses]);
       setLoading(false);
+      setEditFlag(false);
     } catch (err) {
       setLoading(false);
-      console.error("Failed to save expense", err);
+      setEditFlag(false);
+      console.error("Failed to edit/save expense", err);
     }
 
     // Reset form data after submission
@@ -149,12 +168,20 @@ const MarriageExpenseTracker = () => {
   // Delete expense
   const deleteExpense = async (_id) => {
     try {
-      console.info("Id to be deleted", _id);
       await expenseAPI.deleteExpense(_id);
       setExpenses(expenses.filter((expense) => expense._id !== _id));
     } catch (err) {
       console.error("Failed to delete expense", err);
     }
+  };
+
+  // Edit expense
+  const editExpense = async (expense) => {
+    setExpandFlag(true);
+    setEditFlag(true);
+    setExpenseFormData({
+      ...expense,
+    });
   };
 
   // Delete received money
@@ -223,7 +250,7 @@ const MarriageExpenseTracker = () => {
     // Expenses Section
     doc.setFontSize(16);
     doc.text("Expenses Details", 15, 50);
-    autoTable(doc,{
+    autoTable(doc, {
       startY: 55,
       head: [["Date", "Description", "Category", "Amount (₹)"]],
       body: expenses.map((expense) => [
@@ -324,6 +351,7 @@ const MarriageExpenseTracker = () => {
                 onClick={() => {
                   setActiveTab("expenses");
                   setExpandFlag(false);
+                  setEditFlag(false);
                 }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "expenses"
@@ -337,6 +365,7 @@ const MarriageExpenseTracker = () => {
                 onClick={() => {
                   setActiveTab("received");
                   setExpandFlag(false);
+                  setEditFlag(false);
                 }}
                 className={`py-3 px-2 md:px-6 text-sm  sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "received"
@@ -350,6 +379,7 @@ const MarriageExpenseTracker = () => {
                 onClick={() => {
                   setActiveTab("summary");
                   setExpandFlag(false);
+                  setEditFlag(false);
                 }}
                 className={`py-3 px-2 md:px-6 text-sm sm:text-base font-medium hover:cursor-pointer ${
                   activeTab === "summary"
@@ -366,14 +396,14 @@ const MarriageExpenseTracker = () => {
           {activeTab === "expenses" && (
             <div>
               <form
-                onSubmit={addExpense}
+                onSubmit={addOrUpdateExpense}
                 className="bg-white p-6 rounded-lg shadow-md mb-6"
               >
                 <h2
                   className="flex justify-between text-xl font-semibold  text-gray-800 hover:cursor-pointer"
                   onClick={() => setExpandFlag((prev) => !prev)}
                 >
-                  <span>Add New Expense</span>
+                  <span>{editFlag ? "Update Expense" : "Add New Expense"}</span>
                   {expandFlag ? (
                     <ChevronUpIcon className="h-6 w-6" />
                   ) : (
@@ -449,9 +479,16 @@ const MarriageExpenseTracker = () => {
                     <button
                       disabled={loading}
                       type="submit"
-                      className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-pink-500 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-purple-900"
+                      className="flex items-center justify-center cursor-pointer gap-3  mt-4 px-4 py-2  bg-pink-500 text-white rounded font-medium hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-pink-900"
                     >
-                      {loading ? "Adding..." : "Add Expense"}
+                      {loading
+                        ? editFlag
+                          ? "Updating..."
+                          : "Adding..."
+                        : editFlag
+                        ? "Update Expense"
+                        : "Add Expense"}
+
                       {loading && <Loader />}
                     </button>
                   </>
@@ -504,14 +541,17 @@ const MarriageExpenseTracker = () => {
                             <td className="p-2 border border-gray-300 text-right">
                               {formatINR(expense.amount)}
                             </td>
-                            <td className="p-2 border border-gray-300 text-center">
-                              <button
-                                onClick={() => deleteExpense(expense._id)}
-                                className="text-red-500 cursor-pointer hover:text-red-700"
-                                aria-label="Delete expense"
-                              >
-                                Delete
-                              </button>
+                            <td className="p-2  border-gray-300 text-center border">
+                              <div className="flex items-center justify-center gap-x-2">
+                                <PencilSquareIcon
+                                  className="size-4 md:size-5 cursor-pointer border-0 text-blue-500 hover:text-blue-700"
+                                  onClick={() => editExpense(expense)}
+                                />
+                                <TrashIcon
+                                  className="size-4 md:size-5 cursor-pointer border-0 text-red-500 hover:text-red-700"
+                                  onClick={() => deleteExpense(expense._id)}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))}
